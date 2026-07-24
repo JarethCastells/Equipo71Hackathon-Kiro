@@ -1,0 +1,197 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Esquema de base de datos": [
+      {
+        "executionId": "688d4783-850e-4ca5-8125-6e52b40f2575",
+        "chatSessionId": "sess_71ca7c49-c96c-4629-a063-084b9c63e5c1",
+        "timestamp": 1784774137123
+      },
+      {
+        "executionId": "688d4783-850e-4ca5-8125-6e52b40f2575",
+        "chatSessionId": "sess_71ca7c49-c96c-4629-a063-084b9c63e5c1",
+        "timestamp": 1784774658216
+      }
+    ],
+    "2. Tipos y `toPublicX` de mensajería": [
+      {
+        "executionId": "419117fc-05ea-4fb1-8887-039ad8dcd693",
+        "chatSessionId": "sess_08235ab8-2b6e-48a8-ac3f-baef267e1588",
+        "timestamp": 1784774976222
+      },
+      {
+        "executionId": "419117fc-05ea-4fb1-8887-039ad8dcd693",
+        "chatSessionId": "sess_08235ab8-2b6e-48a8-ac3f-baef267e1588",
+        "timestamp": 1784775337111
+      }
+    ],
+    "3. `conversationStore.ts`": [
+      {
+        "executionId": "bd32dc5a-9558-41cb-8e83-3512618d0818",
+        "chatSessionId": "sess_7655d484-286f-4e58-b9be-b1cc9f848d79",
+        "timestamp": 1784776548142
+      },
+      {
+        "executionId": "bd32dc5a-9558-41cb-8e83-3512618d0818",
+        "chatSessionId": "sess_7655d484-286f-4e58-b9be-b1cc9f848d79",
+        "timestamp": 1784776866327
+      }
+    ],
+    "4. `messageStore.ts`": [
+      {
+        "executionId": "bf0230da-3ec1-4910-9e90-49d103b5fdf8",
+        "chatSessionId": "sess_66422237-2f0a-4cbe-9124-6008f4393f08",
+        "timestamp": 1784776979484
+      },
+      {
+        "executionId": "bf0230da-3ec1-4910-9e90-49d103b5fdf8",
+        "chatSessionId": "sess_66422237-2f0a-4cbe-9124-6008f4393f08",
+        "timestamp": 1784777531139
+      }
+    ],
+    "5. Correo de nuevo mensaje (plantilla + envío)": [
+      {
+        "executionId": "4f6c9a4a-cb61-476a-be32-e52f7fa3cc77",
+        "chatSessionId": "sess_600d92bd-98d3-4db2-8020-1176f212f069",
+        "timestamp": 1784777595580
+      },
+      {
+        "executionId": "4f6c9a4a-cb61-476a-be32-e52f7fa3cc77",
+        "chatSessionId": "sess_600d92bd-98d3-4db2-8020-1176f212f069",
+        "timestamp": 1784777907150
+      }
+    ],
+    "6. `messageService.postMessage()` (punto único de escritura)": [
+      {
+        "executionId": "2440360f-f559-4b28-a0c0-0a2995fec242",
+        "chatSessionId": "sess_7dd95792-9326-4ed2-82cd-7541abd70a72",
+        "timestamp": 1784777981426
+      },
+      {
+        "executionId": "2440360f-f559-4b28-a0c0-0a2995fec242",
+        "chatSessionId": "sess_7dd95792-9326-4ed2-82cd-7541abd70a72",
+        "timestamp": 1784778248396
+      }
+    ],
+    "7. Router REST `routes/conversations.ts` + montaje": [
+      {
+        "executionId": "ee6c51aa-2ac8-4d44-b4f5-463c9613559a",
+        "chatSessionId": "sess_068a69b3-99a8-4acb-bf4d-94bc7f707a02",
+        "timestamp": 1784779022845
+      },
+      {
+        "executionId": "ee6c51aa-2ac8-4d44-b4f5-463c9613559a",
+        "chatSessionId": "sess_068a69b3-99a8-4acb-bf4d-94bc7f707a02",
+        "timestamp": 1784779651848
+      }
+    ],
+    "8. Extraer `verifyToken` y preparar `http.Server`": [
+      {
+        "executionId": "7df53cfc-76ba-4850-8d1e-a7230deb2550",
+        "chatSessionId": "sess_256f50f0-487a-41c7-bb32-58f4cd44dff1",
+        "timestamp": 1784780061860
+      },
+      {
+        "executionId": "7df53cfc-76ba-4850-8d1e-a7230deb2550",
+        "chatSessionId": "sess_256f50f0-487a-41c7-bb32-58f4cd44dff1",
+        "timestamp": 1784780173540
+      }
+    ],
+    "9. Capa WebSocket `realtime.ts`": [
+      {
+        "executionId": "c9178c33-f319-43cd-b69c-fafebebaedb0",
+        "chatSessionId": "sess_8faedf2a-bba3-49c7-9c12-777abc6b08fd",
+        "timestamp": 1784780260850
+      },
+      {
+        "executionId": "c9178c33-f319-43cd-b69c-fafebebaedb0",
+        "chatSessionId": "sess_8faedf2a-bba3-49c7-9c12-777abc6b08fd",
+        "timestamp": 1784780709756
+      }
+    ],
+    "10. Cliente API REST (`src/lib/api.ts`)": [
+      {
+        "executionId": "f15554ab-1a75-48cb-80f6-7e4803d2e6a1",
+        "chatSessionId": "sess_c3e32a01-e051-4591-bf42-c1907df2c79f",
+        "timestamp": 1784780844989
+      },
+      {
+        "executionId": "f15554ab-1a75-48cb-80f6-7e4803d2e6a1",
+        "chatSessionId": "sess_c3e32a01-e051-4591-bf42-c1907df2c79f",
+        "timestamp": 1784780915705
+      }
+    ],
+    "11. `SocketContext` + `useSocket`": [
+      {
+        "executionId": "18745a0f-2548-4251-87bf-f6bed91d7a6b",
+        "chatSessionId": "sess_c0ed82cf-d876-4bb9-9839-e67150c12a9b",
+        "timestamp": 1784781051177
+      },
+      {
+        "executionId": "18745a0f-2548-4251-87bf-f6bed91d7a6b",
+        "chatSessionId": "sess_c0ed82cf-d876-4bb9-9839-e67150c12a9b",
+        "timestamp": 1784781166523
+      }
+    ],
+    "12. Bandeja de conversaciones (pantalla + hooks)": [
+      {
+        "executionId": "db90fdf5-9636-4575-8798-dd652a774db3",
+        "chatSessionId": "sess_b959e3f4-cdc4-428c-9ae9-6fc225d49b48",
+        "timestamp": 1784781189528
+      },
+      {
+        "executionId": "db90fdf5-9636-4575-8798-dd652a774db3",
+        "chatSessionId": "sess_b959e3f4-cdc4-428c-9ae9-6fc225d49b48",
+        "timestamp": 1784781574207
+      }
+    ],
+    "13. Panel de conversación en tiempo real": [
+      {
+        "executionId": "27d74ec2-606e-425c-a63a-74e5c8459523",
+        "chatSessionId": "sess_3bf9b9c8-06a1-459a-949a-f01cbea6b87c",
+        "timestamp": 1784781699396
+      },
+      {
+        "executionId": "27d74ec2-606e-425c-a63a-74e5c8459523",
+        "chatSessionId": "sess_3bf9b9c8-06a1-459a-949a-f01cbea6b87c",
+        "timestamp": 1784782102449
+      }
+    ],
+    "14. Iniciar conversación (modal + búsqueda de contactos)": [
+      {
+        "executionId": "13dcf06a-9280-44ee-927f-aa3d54f00016",
+        "chatSessionId": "sess_bad02233-d85e-42e1-a128-18a6349d89e9",
+        "timestamp": 1784782228352
+      },
+      {
+        "executionId": "13dcf06a-9280-44ee-927f-aa3d54f00016",
+        "chatSessionId": "sess_bad02233-d85e-42e1-a128-18a6349d89e9",
+        "timestamp": 1784783228486
+      }
+    ],
+    "15. Integración con el layout (ruta + badge)": [
+      {
+        "executionId": "112e4602-f33d-4d68-8b7a-0e87240ddf23",
+        "chatSessionId": "sess_b7761c4a-efdf-420b-801a-e40be83d03bd",
+        "timestamp": 1784783294394
+      },
+      {
+        "executionId": "112e4602-f33d-4d68-8b7a-0e87240ddf23",
+        "chatSessionId": "sess_b7761c4a-efdf-420b-801a-e40be83d03bd",
+        "timestamp": 1784783580307
+      }
+    ],
+    "16. Pruebas y endurecido final": [
+      {
+        "executionId": "7ebab104-44b1-4144-a1a1-fd8f17e7dfeb",
+        "chatSessionId": "sess_fe913a4b-c443-456b-8b2c-786aeeca5332",
+        "timestamp": 1784786144362
+      },
+      {
+        "executionId": "7ebab104-44b1-4144-a1a1-fd8f17e7dfeb",
+        "chatSessionId": "sess_fe913a4b-c443-456b-8b2c-786aeeca5332",
+        "timestamp": 1784786430739
+      }
+    ]
+  }
+}
