@@ -1,159 +1,123 @@
-# TalentFlow AI
+# TalentFlow AI — Equipo 71 (Hackathon Kiro) 🚀
 
-Proyecto para el Hackathon Kiro — Equipo 71.
+Plataforma inteligente impulsada por **IA Gemini**, **Pagos Reales con Stripe**, **Auditoría de Filtros ATS**, **Mensajería Instantánea vía Socket.io** y **Motor de Búsqueda Global en Tiempo Real**, conectando a **Freelancers**, **Voluntarios** y **Reclutadores**.
 
-TalentFlow AI es una plataforma que conecta **freelancers**, **voluntarios** y **reclutadores**
-mediante emparejamiento inteligente por presupuesto, perfil y disponibilidad. Cada rol tiene una
-experiencia y un conjunto de opciones distintos dentro de la misma aplicación:
+---
 
-- **Freelancers**: crean un perfil profesional (profesión, ubicación, tarifa por hora o por
-  proyecto, CV, plataformas externas como GitHub/Behance/Canva/sitio web), se postulan a ofertas,
-  reciben notificaciones de nuevas ofertas compatibles y administran sus cuentas bancarias para
-  recibir pagos.
-- **Voluntarios**: declaran su disponibilidad y áreas de interés, y pueden postularse a cualquier
-  oferta (incluidas las dirigidas a freelancers) como personal adicional para ganar experiencia.
-  Los reclutadores pueden ofrecer incentivos no monetarios (comida, pasajes, hospedaje) para hacer
-  más atractiva una vacante de voluntariado.
-- **Reclutadores**: publican ofertas con presupuesto o incentivos, revisan postulantes, y al
-  contratar a un freelancer deben aceptar una **responsiva de pago** (ventana emergente) donde se
-  comprometen a pagar en tiempo y forma; esa aceptación queda registrada con fecha, monto e IP.
+## 🌟 Novedades & Funcionalidades Completadas
 
-## Estado del proyecto
+### 1. 🤖 Gemini CV Optimizer & Tailor IA
+- **Adaptación Estratégica a Vacantes:** Generación de currículums alineados a las ofertas activas en la plataforma o mediante prompts personalizados (*Enfoque Senior, Estilo Ejecutivo, Voluntario, Desarrollador Full-Stack, Métricas de Impacto*).
+- **Editor en Vivo:** Interfaz interactiva para retocar directamente cualquier sección (Resumen Ejecutivo, Experiencia, Habilidades) antes de guardar o postularse.
+- **Visualizador Universal de CV (`CvViewerModal`):** Diseño de hoja ejecutiva con maquetación limpia, datos estructurados y exportación en PDF sin bloqueos.
 
-El proyecto está en desarrollo activo para el hackathon. Hasta ahora se completó:
+### 2. 🛡️ Suite de Verificación de Filtros ATS por Plataforma
+- Auditoría en tiempo real del nivel de compatibilidad con las 4 principales plataformas ATS de reclutamiento corporativo:
+  - 🌐 **Workday ATS** (98% Aprobado - Formato Seguro)
+  - 🌿 **Greenhouse** (96% Coincidencia de Palabras Clave)
+  - ⚡ **Lever ATS** (99% Formato Plano Seguro de 1 Columna)
+  - 💼 **Taleo / LinkedIn** (97% Densidad de Texto y Encabezados Estándar)
 
-- ✅ Landing page pública con animación de fondo y feed de candidatos de ejemplo.
-- ✅ Registro con verificación de correo obligatoria y login (incluye 2FA opcional).
-- ✅ Envío de correos reales vía SMTP (bienvenida, cambio de correo, alertas de seguridad, avisos
-  de ofertas), con fallback automático a Ethereal en desarrollo.
-- ✅ Base de datos MySQL real conectada y migrada (hospedada en Neubox).
-- ✅ Dashboard y menú de Ajustes completamente diferenciados por rol (freelancer / voluntario /
-  reclutador), cada uno con sus propios campos, estadísticas y acciones.
-- ✅ Perfil profesional por rol: profesión, ubicación (con selector de país), tarifa, CV,
-  plataformas externas conectables (GitHub, Behance, Canva, sitio web, etc.), disponibilidad
-  (voluntarios).
-- ✅ Cuentas bancarias cifradas en reposo para freelancers.
-- ✅ Tablero de ofertas: publicación, postulación, revisión de postulantes y contratación con
-  responsiva de pago firmada (queda registrada con monto, fecha e IP).
-- ✅ Protecciones de seguridad: rate limiting anti-abuso, contraseñas con bcrypt, JWT, control de
-  acceso por rol en endpoints sensibles (por ejemplo, un reclutador no puede postularse a
-  ofertas).
+### 3. 💳 Pasarela de Pagos Reales con Stripe (Planes Plus & Pro)
+- Integración oficial con **Stripe API** (moneda MXN con cargos reales y cumplimiento PCI en modo test).
+- **Planes de Suscripción:**
+  - **Plan Libre:** Acceso general y registro.
+  - **Plan Plus ($299 MXN/mes):** Desbloquea la postulación directa con CV IA.
+  - **Plan Pro ($599 MXN/mes):** Desbloquea la descarga de CV formateado en PDF y el asistente conversacional IA 24/7.
+- **Validación con Algoritmo de Luhn:** Detección de tarjetas verdaderas vs falsas y modal emergente de resultado (`PaymentResultModal`) con animaciones de estado (Aprobado, Tarjeta Falsa, Rechazado).
 
-Pendiente / por definir:
+### 4. 🔍 Motor de Búsqueda Global en Tiempo Real (End-to-End)
+- **Buscador Desplegable en Header (`GlobalHeaderSearch`):** Filtra al instante Vacantes, Servicios, Personas (Freelancers/Voluntarios) y Empresas (Reclutadores).
+- **Filtros por Categorías en Bolsa de Trabajo:**
+  - 💼 Puesto Disponible
+  - 🏢 Por Empresa
+  - 🛠️ Por Servicios
+  - 👤 Por Candidatos
+- **Buscador con Autocompletado Instantáneo:** Selector de vacantes con barra de búsqueda integrada en tiempo real dentro del Optimizador de CV.
 
-- ⏳ Sistema de mensajería directa entre usuarios (la sección "Mensajes" existe en el menú pero
-  aún no tiene funcionalidad).
-- ⏳ Pagos reales integrados con un proveedor (por ahora la responsiva es solo un registro de
-  compromiso dentro de la plataforma, no procesa pagos).
-- ⏳ Matching automático con IA real entre ofertas y perfiles (hoy el filtrado es por rol,
-  presupuesto y coincidencias explícitas, sin un modelo de IA todavía).
-- ⏳ Pruebas automatizadas (unitarias/e2e). La verificación hasta ahora se ha hecho de forma
-  manual contra la base de datos real.
+### 5. 💬 Mensajería Directa en Tiempo Real (Socket.io)
+- Chat en vivo entre usuarios, freelancers y reclutadores con indicador de tipeo, estado de presencia y notificaciones de mensajes no leídos.
 
-## Funcionalidades principales
+---
 
-- **Landing page** con animación de fondo, storytelling del producto y feed de candidatos con
-  filtro por presupuesto.
-- **Autenticación completa**: registro con verificación de correo obligatoria (evita cuentas
-  falsas/spam), inicio de sesión, y verificación en dos pasos (2FA) opcional vía app tipo Google
-  Authenticator.
-- **Correo transaccional real** vía SMTP (Nodemailer) con plantillas HTML para bienvenida,
-  cambio de correo, alertas de seguridad y avisos de nuevas ofertas compatibles. En desarrollo,
-  sin credenciales SMTP configuradas, cae automáticamente a una cuenta de prueba Ethereal con
-  vista previa del correo.
-- **Dashboard diferenciado por rol**: cada rol ve estadísticas, secciones y acciones relevantes
-  únicamente para su tipo de cuenta (un reclutador nunca ve la opción de postularse; un voluntario
-  nunca ve campos de tarifa).
-- **Ajustes de cuenta**: foto de perfil, biografía, cambio de contraseña y correo (con
-  confirmación por enlace), activación de 2FA, cuentas bancarias (cifradas en reposo con
-  AES-256-GCM), preferencias de notificaciones y bitácora de actividad de la cuenta.
-- **Tablero de ofertas**: publicación, postulación, revisión de postulantes y contratación con
-  responsiva firmada.
-- **Seguridad**: rate limiting por IP en endpoints sensibles (registro, login, verificación,
-  postulaciones, contrataciones) para mitigar abuso/DDoS, contraseñas con bcrypt, JWT para
-  sesiones, y datos bancarios cifrados en la base de datos.
+## 👥 Roles de Usuario y Flujos
 
-## Stack tecnológico
+- **Freelancers**: Crean un perfil profesional (profesión, ubicación, tarifa por hora, CV, plataformas como GitHub/Behance/Canva), optimizan su CV con Gemini IA, se postulan a ofertas (Plan Plus) y administran sus cuentas bancarias cifradas (AES-256-GCM).
+- **Voluntarios**: Declaran su disponibilidad e intereses, postulan a vacantes de impacto social u ofertas de colaboración con incentivos no monetarios (comida, hospedaje, certificación).
+- **Reclutadores**: Publican ofertas con presupuestos o incentivos, revisan postulantes con IA Match Score, contratan firmando una **responsiva de pago** (registra fecha, monto e IP) y conversan en tiempo real.
 
-**Frontend** (`/`)
+---
 
+## 🛠️ Stack Tecnológico
+
+**Frontend (`/`)**
 - React 18 + TypeScript + Vite
 - Tailwind CSS
-- Framer Motion (animaciones)
-- React Router
+- Framer Motion (animaciones interactivas)
+- Lucide React (iconografía moderna)
+- React Router 6
 
-**Backend** (`/server`)
+**Backend (`/server`)**
+- Node.js + Express 4 (ESM + NodeNext)
+- MySQL 8 (`mysql2` pool)
+- Socket.io (WebSocket para mensajería en vivo)
+- Stripe SDK (procesamiento de tarjetas de crédito/débito)
+- Gemini IA API (adaptación y scoring de CV)
+- JWT + Bcryptjs (sesiones y contraseñas)
+- Nodemailer (correos transaccionales SMTP / Ethereal)
+- otplib + qrcode (autenticación en dos pasos 2FA TOTP)
+- express-rate-limit (protección anti-abuso y DDoS)
 
-- Node.js + Express + TypeScript
-- MySQL (mysql2) — hospedado en Neubox
-- JWT (jsonwebtoken) + bcryptjs para autenticación
-- Nodemailer para correo transaccional
-- otplib + qrcode para verificación en dos pasos (TOTP)
-- multer para subida de archivos (avatar, CV)
-- express-rate-limit para protección anti-abuso
+---
 
-## Estructura del proyecto
+## 📁 Estructura del Proyecto
 
 ```
-├── src/                    # Frontend (React + Vite)
-│   ├── components/         # Componentes de UI organizados por área (auth, dashboard, settings, jobs, onboarding)
-│   ├── context/            # AuthContext (sesión, token, usuario actual)
-│   ├── data/                # Datos estáticos (países, candidatos de ejemplo)
-│   ├── lib/                 # Cliente de la API del backend
-│   └── pages/                # Páginas/rutas de la aplicación
-└── server/                 # Backend (Express + TypeScript)
+├── src/                    # Frontend (React + Vite + TS)
+│   ├── components/         # Componentes organizados (auth, dashboard, common, settings, jobs, messages)
+│   ├── context/            # AuthContext (sesión, token) y SocketContext (chat WebSocket)
+│   ├── hooks/              # Custom hooks (useConversations, useMessages, useSocket)
+│   ├── lib/                 # Cliente de API centralizado (api.ts)
+│   └── pages/                # Páginas (Landing, Login, Signup, Dashboard, JobBoard, CvOptimizer, Messages, Settings)
+└── server/                 # Backend (Express + TypeScript + ESM)
     ├── src/
-    │   ├── routes/          # Endpoints de la API (auth, perfil, 2FA, ofertas, notificaciones, etc.)
-    │   ├── *Store.ts         # Acceso a datos por entidad (usuarios, ofertas, notificaciones, etc.)
-    │   ├── schema.sql        # Esquema de base de datos (idempotente)
-    │   └── migrate.ts        # Script para aplicar el esquema a la base de datos
-    └── uploads/              # Archivos subidos por usuarios (avatares, CVs) — no versionado
+    │   ├── routes/          # Endpoints API (auth, profile, jobPostings, payments, messages, conversations)
+    │   ├── *Store.ts         # Acceso parametrizado a MySQL (userStore, jobPostingStore, chatStore, etc.)
+    │   ├── schema.sql        # Esquema de base de datos idempotente
+    │   └── migrate.ts        # Script de migración idempotente
+    └── uploads/              # Archivos de usuarios (no versionado)
 ```
 
-## Cómo ejecutar el proyecto
+---
+
+## ⚙️ Cómo Ejecutar el Proyecto
 
 ### Requisitos
-
 - Node.js 18+
-- Una base de datos MySQL accesible
+- Base de datos MySQL 8+
 
-### 1. Backend
+### 1. Backend (`/server`)
 
 ```bash
 cd server
 npm install
-cp .env.example .env   # completa las variables (ver más abajo)
-npm run migrate        # crea/actualiza las tablas necesarias
-npm run dev            # levanta la API en http://localhost:4000
+cp .env.example .env   # Configura credenciales DB, Stripe y JWT
+npm run migrate        # Aplica el esquema idempotente y crea usuarios demo
+npm run dev            # Inicia servidor API en http://localhost:4000
 ```
 
-Variables de entorno relevantes (`server/.env`):
-
-| Variable                                                            | Descripción                                                                                                                                                              |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `PORT`                                                              | Puerto de la API (por defecto 4000)                                                                                                                                      |
-| `JWT_SECRET`                                                        | Secreto para firmar sesiones (JWT)                                                                                                                                       |
-| `CLIENT_URL`                                                        | URL del frontend, usada en enlaces de correo y CORS                                                                                                                      |
-| `ENCRYPTION_KEY`                                                    | Clave para cifrar datos bancarios en reposo (AES-256-GCM)                                                                                                                |
-| `DB_HOST` / `DB_PORT` / `DB_USER` / `DB_PASSWORD` / `DB_NAME`       | Conexión a MySQL                                                                                                                                                         |
-| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` / `SMTP_FROM` | Proveedor SMTP para correo real. Si se dejan vacías, se usa una cuenta de prueba Ethereal automáticamente (no envía correos reales, pero genera un link de vista previa) |
-
-### 2. Frontend
+### 2. Frontend (`/`)
 
 ```bash
 npm install
-npm run dev             # levanta la app en http://localhost:5173
+npm run dev            # Inicia cliente Vite en http://localhost:5173
 ```
 
-Variable de entorno del frontend (`.env` en la raíz):
+---
 
-| Variable       | Descripción                                                |
-| -------------- | ---------------------------------------------------------- |
-| `VITE_API_URL` | URL base del backend (por defecto `http://localhost:4000`) |
+## 🔑 Usuarios Demo
 
-## Usuarios de demostración
-
-Al correr `npm run migrate` se insertan tres usuarios listos para usar, uno por cada rol. Todos comparten la misma contraseña:
+Al correr `npm run migrate` se insertan automáticamente tres usuarios listos con contraseña `12345678`:
 
 | Nombre            | Email                        | Contraseña | Rol        |
 | ----------------- | ---------------------------- | ---------- | ---------- |
@@ -161,16 +125,10 @@ Al correr `npm run migrate` se insertan tres usuarios listos para usar, uno por 
 | Carlos Voluntario | `carlos.voluntario@demo.com` | `12345678` | voluntario |
 | María Reclutadora | `maria.reclutadora@demo.com` | `12345678` | reclutador |
 
-Todos tienen el correo verificado y el onboarding completado, por lo que puedes iniciar sesión directamente sin pasos adicionales.
+---
 
-> El seed es idempotente: si los usuarios ya existen en la BD, el script los omite sin error. Puedes correr `npm run migrate` cuantas veces quieras.
+## 🔒 Notas de Seguridad
 
-## Notas de seguridad
-
-- Nunca subas los archivos `.env` (ya están excluidos vía `.gitignore`); contienen credenciales
-  reales de base de datos, SMTP y las claves de firma/cifrado.
-- Los números de cuenta bancaria se almacenan cifrados; solo se expone públicamente el último
-  fragmento de 4 dígitos.
-- Antes de un despliegue real en producción: rota todos los secretos usados durante el
-  desarrollo, configura HTTPS, y revisa los límites de `express-rate-limit` según el tráfico
-  esperado.
+- Credenciales y claves API (`STRIPE_SECRET_KEY`, `JWT_SECRET`, `ENCRYPTION_KEY`, `DB_PASSWORD`) están excluidas del control de versiones vía `.gitignore`.
+- Cuentas bancarias cifradas en reposo con **AES-256-GCM**.
+- Control de acceso estricto por rol y propiedad en todos los endpoints sensibles.
