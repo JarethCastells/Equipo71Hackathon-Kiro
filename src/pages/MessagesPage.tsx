@@ -25,20 +25,20 @@ import DashboardLayout from '../components/dashboard/DashboardLayout'
 import { useAuth } from '../context/AuthContext'
 import {
   analyzeChatWithAI,
+  getLegacyConversations,
   getMessagesThread,
-  listConversations,
   sendChatMessage,
   updateMessageNotificationSettings,
   type AIAnalysisResponse,
   type ChatMessage,
-  type ConversationSummary,
+  type LegacyConversationSummary,
 } from '../lib/api'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
 export default function MessagesPage() {
   const { user, refreshUser } = useAuth()
-  const [conversations, setConversations] = useState<ConversationSummary[]>([])
+  const [conversations, setConversations] = useState<LegacyConversationSummary[]>([])
   const [activeTab, setActiveTab] = useState<'freelancers' | 'voluntarios' | 'todos'>('freelancers')
   const [selectedPartnerId, setSelectedPartnerId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -86,7 +86,7 @@ export default function MessagesPage() {
     setLoadingConv(true)
     setError(null)
     try {
-      const res = await listConversations()
+      const res = await getLegacyConversations()
       if (cancelled) return
       setConversations(res.conversations)
       if (res.conversations.length > 0 && !selectedPartnerId) {

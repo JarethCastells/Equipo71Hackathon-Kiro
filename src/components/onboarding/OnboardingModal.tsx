@@ -25,7 +25,7 @@ export default function OnboardingModal() {
   const [availability, setAvailability] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
-  const [dismissed, setDismissed] = useState(false)
+  const [dismissed, _setDismissed] = useState(false)
 
   const show = Boolean(user) && !user!.onboardingCompleted && !dismissed
   const role = user?.role

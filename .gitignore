@@ -20,3 +20,9 @@ dist-ssr
 *.local
 .env
 *.tsbuildinfo
+.claude
+.atl
+test-results
+
+.gitignore
+.vercel
