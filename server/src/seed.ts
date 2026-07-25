@@ -201,13 +201,11 @@ export async function runSeed() {
 
     // ── 7. Pago ───────────────────────────────────────────────────────────
     console.log('💳 Procesando pago...')
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 19).replace('T', ' ')
     await conn.execute(
-      `INSERT INTO payments (id, agreement_id, recruiter_id, freelancer_id, amount, currency, provider, provider_payment_id, status, destination_bank_name, destination_account_last4, paid_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO payments (id, agreement_id, recruiter_id, freelancer_id, amount, status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, NOW())`,
       [ids.payment1, ids.agreement1, ids.recruiter, ids.freelancer1,
-        20000.00, 'MXN', 'stripe', 'pi_3NqX8kLkd9fH2s', 'succeeded',
-        'BBVA', '4567', yesterday])
+        20000.00, 'succeeded'])
 
     // ── 8. Chat ───────────────────────────────────────────────────────────
     console.log('💬 Enviando mensajes...')
