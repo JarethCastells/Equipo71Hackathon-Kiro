@@ -74,10 +74,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { user } = await api.fetchMe(currentToken)
       setUser(user)
     } catch {
-      // Token inválido o expirado — limpiamos sesión
-      logout()
+      // Token inválido o expirado — limpiamos sesión directamente
+      // (no llamamos a logout() para evitar dependencia circular)
+      localStorage.removeItem(TOKEN_KEY)
+      setToken(null)
+      setUser(null)
     }
-  }, [logout])
+  }, [])
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY)
