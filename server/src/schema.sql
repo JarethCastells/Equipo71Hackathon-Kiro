@@ -270,3 +270,15 @@ CREATE TABLE IF NOT EXISTS messages (
   CONSTRAINT fk_messages_conversation FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
   CONSTRAINT fk_messages_sender       FOREIGN KEY (sender_id)       REFERENCES users(id)         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Migraciones incrementales (seguras para BD ya existentes)
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- payments: columnas añadidas después del esquema inicial
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS currency VARCHAR(10) NOT NULL DEFAULT 'MXN';
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS provider VARCHAR(30) NOT NULL DEFAULT 'stripe';
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS provider_payment_id VARCHAR(120) NULL;
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS destination_bank_name VARCHAR(120) NULL;
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS destination_account_last4 CHAR(4) NULL;
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS paid_at DATETIME NULL;
