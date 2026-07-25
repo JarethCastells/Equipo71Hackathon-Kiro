@@ -190,7 +190,7 @@ function RecruiterDashboard() {
                       </p>
                       {payment ? (
                         <span className="shrink-0 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
-                          {payment.status === 'succeeded' ? 'Pagado' : 'Pendiente'} ({payment.provider.toUpperCase()})
+                          {payment.status === 'succeeded' ? 'Pagado' : 'Pendiente'} ({(payment.provider || 'stripe').toUpperCase()})
                         </span>
                       ) : (
                         <span className="shrink-0 rounded-full bg-amber-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-amber-400">

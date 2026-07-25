@@ -467,7 +467,7 @@ function ApplicantsPanel({
                                   email: app.applicantEmail,
                                   role: app.applicantRole,
                                   avatarUrl: app.applicantAvatarUrl,
-                                  cvUrl: `================================================\nCURRÍCULUM DE CANDIDATO: ${app.applicantName.toUpperCase()}\nEmail: ${app.applicantEmail} | Rol: ${app.applicantRole.toUpperCase()}\n================================================\n\nMENSAJE DE POSTULACIÓN:\n"${app.message || 'Sin mensaje adicional.'}"\n\nANÁLISIS DE COMPATIBILIDAD IA (${app.matchScore}%):\n${app.matchReason || 'Candidato analizado mediante Gemini IA.'}\n\nCOMPETENCIAS DESTACADAS:\n${app.strengthTags.map((t) => `- ${t}`).join('\n')}`,
+                                  cvUrl: `================================================\nCURRÍCULUM DE CANDIDATO: ${(app.applicantName || '').toUpperCase()}\nEmail: ${app.applicantEmail || ''} | Rol: ${(app.applicantRole || '').toUpperCase()}\n================================================\n\nMENSAJE DE POSTULACIÓN:\n"${app.message || 'Sin mensaje adicional.'}"\n\nANÁLISIS DE COMPATIBILIDAD IA (${app.matchScore}%):\n${app.matchReason || 'Candidato analizado mediante Gemini IA.'}\n\nCOMPETENCIAS DESTACADAS:\n${app.strengthTags.map((t) => `- ${t}`).join('\n')}`,
                                 })
                               }
                               className="mt-2 flex items-center gap-1.5 rounded-full border border-accent-500/30 bg-accent-500/10 px-3 py-1 text-[11px] font-bold text-accent-300 hover:bg-accent-500/20"

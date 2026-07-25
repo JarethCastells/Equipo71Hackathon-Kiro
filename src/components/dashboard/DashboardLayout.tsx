@@ -292,7 +292,7 @@ function GlobalHeaderSearch({ onSelectUserCv }: { onSelectUserCv: (user: any) =>
                   >
                     <div>
                       <p className="font-semibold text-white">{person.name}</p>
-                      <p className="text-[10px] text-slate-400">{person.profession || person.role.toUpperCase()}</p>
+                      <p className="text-[10px] text-slate-400">{person.profession || (person.role || '').toUpperCase()}</p>
                     </div>
                     <span className="text-[10px] font-bold text-accent-400 bg-accent-500/10 border border-accent-500/30 px-2.5 py-1 rounded-full">
                       Ver CV

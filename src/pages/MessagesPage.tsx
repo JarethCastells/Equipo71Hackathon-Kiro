@@ -294,7 +294,7 @@ export default function MessagesPage() {
               {filteredConversations.map((c) => {
                 const isSelected = selectedPartnerId === c.partnerId
                 const avatarSrc = c.partnerAvatarUrl ? `${API_URL}${c.partnerAvatarUrl}` : null
-                const initials = c.partnerName
+                const initials = (c.partnerName || '?')
                   .split(' ')
                   .map((p) => p[0])
                   .slice(0, 2)
@@ -360,7 +360,7 @@ export default function MessagesPage() {
                       />
                     ) : (
                       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-xs font-bold text-white">
-                        {selectedPartner.partnerName.slice(0, 2).toUpperCase()}
+                        {(selectedPartner.partnerName || '??').slice(0, 2).toUpperCase()}
                       </span>
                     )}
                     <div>

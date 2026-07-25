@@ -287,7 +287,7 @@ export default function CvOptimizer() {
                                 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                                 : 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
                             }`}>
-                              {selectedJobObject.roleTarget.toUpperCase()} (${selectedJobObject.budgetPerHour} MXN/h)
+                              {(selectedJobObject.roleTarget || '').toUpperCase()} (${selectedJobObject.budgetPerHour} MXN/h)
                             </span>
                           </>
                         ) : (
@@ -361,7 +361,7 @@ export default function CvOptimizer() {
                                       ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                                       : 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
                                   }`}>
-                                    {job.roleTarget.toUpperCase()} (${job.budgetPerHour} MXN/h)
+                                    {(job.roleTarget || '').toUpperCase()} (${job.budgetPerHour} MXN/h)
                                   </span>
                                 </div>
                                 <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
