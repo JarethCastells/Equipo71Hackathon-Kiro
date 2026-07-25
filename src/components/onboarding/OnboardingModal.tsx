@@ -63,8 +63,8 @@ export default function OnboardingModal() {
       // como completado para no volver a mostrar el modal cada login.
       await updateRoleDetails({ onboardingCompleted: true })
       await refreshUser()
-    } catch {
-      setDismissed(true)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'No se pudo saltar el onboarding. Intenta de nuevo.')
     } finally {
       setSaving(false)
     }

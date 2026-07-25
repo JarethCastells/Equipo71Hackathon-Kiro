@@ -66,6 +66,9 @@ export default function ProfileSection() {
   const [photos, setPhotos] = useState<UserPhoto[]>([])
   const [photoCaption, setPhotoCaption] = useState('')
   const [uploadingPhoto, setUploadingPhoto] = useState(false)
+  const [platformError, setPlatformError] = useState<string | null>(null)
+  const [photoError, setPhotoError] = useState<string | null>(null)
+  const [postError, setPostError] = useState<string | null>(null)
 
   // Mini-Blog de Publicaciones
   const [posts, setPosts] = useState<UserPost[]>([])
@@ -79,21 +82,38 @@ export default function ProfileSection() {
   const [cvMessage, setCvMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    loadShowcaseData()
+    let cancelled = false
+    loadShowcaseData(cancelled)
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadShowcaseData = async () => {
-    try {
-      const [platRes, photoRes, postRes] = await Promise.all([
-        listPlatforms(),
-        listPhotos(),
-        listPosts(),
-      ])
-      setPlatforms(platRes.platforms)
-      setPhotos(photoRes.photos)
-      setPosts(postRes.posts)
-    } catch (err) {
-      console.error('Error cargando elementos del showcase:', err)
+  const loadShowcaseData = async (cancelled = false) => {
+    const results = await Promise.allSettled([
+      listPlatforms(),
+      listPhotos(),
+      listPosts(),
+    ])
+    if (cancelled) return
+
+    const [platResult, photoResult, postResult] = results
+
+    if (platResult.status === 'fulfilled') {
+      setPlatforms(platResult.value.platforms)
+    } else {
+      setPlatformError('No se pudieron cargar tus redes sociales.')
+    }
+
+    if (photoResult.status === 'fulfilled') {
+      setPhotos(photoResult.value.photos)
+    } else {
+      setPhotoError('No se pudieron cargar tus fotos.')
+    }
+
+    if (postResult.status === 'fulfilled') {
+      setPosts(postResult.value.posts)
+    } else {
+      setPostError('No se pudieron cargar tus publicaciones.')
     }
   }
 
@@ -138,23 +158,25 @@ export default function ProfileSection() {
     e.preventDefault()
     if (!newPlatformUrl.trim()) return
     setAddingPlatform(true)
+    setPlatformError(null)
     try {
       const res = await addPlatform(newPlatformName, newPlatformUrl.trim())
       setPlatforms((prev) => [...prev, res.platform])
       setNewPlatformUrl('')
     } catch (err) {
-      console.error('Error al agregar red social:', err)
+      setPlatformError(err instanceof ApiError ? err.message : 'No se pudo agregar la red social.')
     } finally {
       setAddingPlatform(false)
     }
   }
 
   const handleRemovePlatform = async (id: string) => {
+    setPlatformError(null)
     try {
       await removePlatform(id)
       setPlatforms((prev) => prev.filter((p) => p.id !== id))
     } catch (err) {
-      console.error('Error al eliminar red social:', err)
+      setPlatformError(err instanceof ApiError ? err.message : 'No se pudo eliminar la red social.')
     }
   }
 
@@ -163,12 +185,13 @@ export default function ProfileSection() {
     const file = e.target.files?.[0]
     if (!file) return
     setUploadingPhoto(true)
+    setPhotoError(null)
     try {
       const res = await uploadPhoto(file, photoCaption.trim() || undefined)
       setPhotos((prev) => [res.photo, ...prev])
       setPhotoCaption('')
     } catch (err) {
-      console.error('Error al subir foto:', err)
+      setPhotoError(err instanceof ApiError ? err.message : 'No se pudo subir la foto.')
     } finally {
       setUploadingPhoto(false)
       if (photoInputRef.current) photoInputRef.current.value = ''
@@ -176,11 +199,12 @@ export default function ProfileSection() {
   }
 
   const handleDeletePhoto = async (id: string) => {
+    setPhotoError(null)
     try {
       await deletePhoto(id)
       setPhotos((prev) => prev.filter((p) => p.id !== id))
     } catch (err) {
-      console.error('Error al eliminar foto:', err)
+      setPhotoError(err instanceof ApiError ? err.message : 'No se pudo eliminar la foto.')
     }
   }
 
@@ -189,6 +213,7 @@ export default function ProfileSection() {
     e.preventDefault()
     if (!postTitle.trim() || !postContent.trim()) return
     setPublishingPost(true)
+    setPostError(null)
     try {
       const res = await createPost({
         title: postTitle.trim(),
@@ -200,18 +225,19 @@ export default function ProfileSection() {
       setPostContent('')
       setPostImageUrl('')
     } catch (err) {
-      console.error('Error al crear publicación:', err)
+      setPostError(err instanceof ApiError ? err.message : 'No se pudo crear la publicación.')
     } finally {
       setPublishingPost(false)
     }
   }
 
   const handleDeletePost = async (id: string) => {
+    setPostError(null)
     try {
       await deletePost(id)
       setPosts((prev) => prev.filter((p) => p.id !== id))
     } catch (err) {
-      console.error('Error al eliminar publicación:', err)
+      setPostError(err instanceof ApiError ? err.message : 'No se pudo eliminar la publicación.')
     }
   }
 
@@ -381,6 +407,13 @@ export default function ProfileSection() {
           Conecta tus perfiles profesionales para que reclutadores o candidatos exploren tu trabajo.
         </p>
 
+        {platformError && (
+          <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
+            <AlertCircle size={15} className="shrink-0" />
+            {platformError}
+          </div>
+        )}
+
         <form onSubmit={handleAddPlatform} className="mt-4 flex flex-col sm:flex-row items-center gap-2">
           <select
             value={newPlatformName}
@@ -456,6 +489,13 @@ export default function ProfileSection() {
           Sube imágenes de tus proyectos, eventos, reconocimientos o trabajos para mostrarlos en tu perfil.
         </p>
 
+        {photoError && (
+          <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
+            <AlertCircle size={15} className="shrink-0" />
+            {photoError}
+          </div>
+        )}
+
         <div className="mt-4 flex flex-col sm:flex-row items-center gap-3">
           <input
             type="text"
@@ -519,6 +559,13 @@ export default function ProfileSection() {
         <p className="mt-1 text-xs text-slate-400">
           Publica artículos cortos, novedades de proyectos o reflexiones profesionales en tu muro de presentación.
         </p>
+
+        {postError && (
+          <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
+            <AlertCircle size={15} className="shrink-0" />
+            {postError}
+          </div>
+        )}
 
         <form onSubmit={handleCreatePost} className="mt-4 space-y-3 rounded-2xl border border-white/10 bg-slate-950/40 p-4">
           <input

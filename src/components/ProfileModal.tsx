@@ -97,6 +97,9 @@ export default function ProfileModal({ candidate, onClose, onShortlist }: Profil
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
+                onClick={() => {
+                  alert('Inicia sesión para enviar mensajes')
+                }}
                 className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
               >
                 <MessageCircle size={16} />

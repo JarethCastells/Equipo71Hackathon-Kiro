@@ -26,7 +26,7 @@ export default {
         'fade-up': 'fadeUp 0.6s ease-out forwards',
         'gradient-pan': 'gradientPan 12s ease infinite',
         blob: 'blob 18s ease-in-out infinite',
-        shimmer: 'shimmer 1.5s infinite',
+        shimmer: 'shimmer 2s infinite',
       },
       keyframes: {
         fadeUp: {
@@ -43,6 +43,7 @@ export default {
           '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
         },
         shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
         },
       },

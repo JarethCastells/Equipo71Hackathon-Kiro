@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
+  AlertCircle,
   Briefcase,
   Clock,
   FileSignature,
   HeartHandshake,
   Landmark,
   Link2,
+  RefreshCw,
   ShieldCheck,
   Sparkles,
   UserRoundCheck,
@@ -76,15 +78,24 @@ function RecruiterDashboard() {
   const [agreements, setAgreements] = useState<HiringAgreementWithDetails[]>([])
   const [payments, setPayments] = useState<PaymentRecord[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     Promise.all([listJobPostings(), listMyHiringAgreements(), listMyPayments()])
       .then(([postingsRes, agreementsRes, paymentsRes]) => {
+        if (cancelled) return
         setPostings(postingsRes.postings.filter((p) => p.createdBy === user?.id))
         setAgreements(agreementsRes.agreements)
         setPayments(paymentsRes.payments)
       })
-      .finally(() => setLoading(false))
+      .catch(() => {
+        if (!cancelled) setError('No se pudieron cargar los datos del dashboard.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
   }, [user?.id])
 
   const totalCommitted = agreements.reduce((sum, a) => sum + a.agreedAmount, 0)
@@ -99,6 +110,32 @@ function RecruiterDashboard() {
         subtitle="Este es el resumen de tus ofertas, contrataciones y pagos realizados."
         badge="Pasarela de pagos real activa"
       />
+
+      {error && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+          <AlertCircle size={16} className="shrink-0" />
+          <span className="flex-1">{error}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setError(null)
+              setLoading(true)
+              Promise.all([listJobPostings(), listMyHiringAgreements(), listMyPayments()])
+                .then(([postingsRes, agreementsRes, paymentsRes]) => {
+                  setPostings(postingsRes.postings.filter((p) => p.createdBy === user?.id))
+                  setAgreements(agreementsRes.agreements)
+                  setPayments(paymentsRes.payments)
+                })
+                .catch(() => setError('No se pudieron cargar los datos del dashboard.'))
+                .finally(() => setLoading(false))
+            }}
+            className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+          >
+            <RefreshCw size={12} />
+            Reintentar
+          </button>
+        </div>
+      )}
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Ofertas publicadas" value={postings.length} icon={Briefcase} accent="text-accent-400" delay={0} />
@@ -187,19 +224,33 @@ function FreelancerDashboard() {
   const [applications, setApplications] = useState<JobApplicationWithPosting[]>([])
   const [platforms, setPlatforms] = useState<UserPlatform[]>([])
   const [bankCount, setBankCount] = useState(0)
+  const [payments, setPayments] = useState<PaymentRecord[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    Promise.all([listMyApplications(), listPlatforms(), listBankAccounts()])
-      .then(([appsRes, platformsRes, bankRes]) => {
+    let cancelled = false
+    Promise.all([listMyApplications(), listPlatforms(), listBankAccounts(), listMyPayments()])
+      .then(([appsRes, platformsRes, bankRes, paymentsRes]) => {
+        if (cancelled) return
         setApplications(appsRes.applications)
         setPlatforms(platformsRes.platforms)
         setBankCount(bankRes.accounts.length)
+        setPayments(paymentsRes.payments)
       })
-      .finally(() => setLoading(false))
+      .catch(() => {
+        if (!cancelled) setError('No se pudieron cargar los datos del dashboard.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
   }, [])
 
   const acceptedCount = applications.filter((a) => a.status === 'accepted').length
+  const totalReceived = payments
+    .filter((p) => p.status === 'succeeded')
+    .reduce((sum, p) => sum + p.amount, 0)
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -208,6 +259,33 @@ function FreelancerDashboard() {
         subtitle="Este es el resumen de tus postulaciones y tu perfil profesional."
         badge="IA buscando ofertas que se ajusten a tu perfil"
       />
+
+      {error && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+          <AlertCircle size={16} className="shrink-0" />
+          <span className="flex-1">{error}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setError(null)
+              setLoading(true)
+              Promise.all([listMyApplications(), listPlatforms(), listBankAccounts(), listMyPayments()])
+                .then(([appsRes, platformsRes, bankRes, paymentsRes]) => {
+                  setApplications(appsRes.applications)
+                  setPlatforms(platformsRes.platforms)
+                  setBankCount(bankRes.accounts.length)
+                  setPayments(paymentsRes.payments)
+                })
+                .catch(() => setError('No se pudieron cargar los datos del dashboard.'))
+                .finally(() => setLoading(false))
+            }}
+            className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+          >
+            <RefreshCw size={12} />
+            Reintentar
+          </button>
+        </div>
+      )}
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Postulaciones enviadas" value={applications.length} icon={Briefcase} accent="text-accent-400" delay={0} />
@@ -220,6 +298,9 @@ function FreelancerDashboard() {
           delay={0.12}
         />
         <StatCard label="Plataformas conectadas" value={platforms.length} icon={Link2} accent="text-violet-400" delay={0.18} />
+      </div>
+      <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard label="Total recibido" value={`$${totalReceived.toFixed(2)}`} icon={Wallet} accent="text-emerald-400" delay={0.24} />
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -301,14 +382,23 @@ function VolunteerDashboard() {
   const [postings, setPostings] = useState<JobPosting[]>([])
   const [applications, setApplications] = useState<JobApplicationWithPosting[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     Promise.all([listJobPostings(), listMyApplications()])
       .then(([postingsRes, appsRes]) => {
+        if (cancelled) return
         setPostings(postingsRes.postings.filter((p) => p.roleTarget === 'voluntario'))
         setApplications(appsRes.applications)
       })
-      .finally(() => setLoading(false))
+      .catch(() => {
+        if (!cancelled) setError('No se pudieron cargar los datos del dashboard.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
   }, [])
 
   const appliedIds = useMemo(() => new Set(applications.map((a) => a.postingId)), [applications])
@@ -322,6 +412,31 @@ function VolunteerDashboard() {
         subtitle="Estas son las oportunidades de voluntariado disponibles para ti."
         badge="Gana experiencia profesional postulándote"
       />
+
+      {error && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+          <AlertCircle size={16} className="shrink-0" />
+          <span className="flex-1">{error}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setError(null)
+              setLoading(true)
+              Promise.all([listJobPostings(), listMyApplications()])
+                .then(([postingsRes, appsRes]) => {
+                  setPostings(postingsRes.postings.filter((p) => p.roleTarget === 'voluntario'))
+                  setApplications(appsRes.applications)
+                })
+                .catch(() => setError('No se pudieron cargar los datos del dashboard.'))
+                .finally(() => setLoading(false))
+            }}
+            className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+          >
+            <RefreshCw size={12} />
+            Reintentar
+          </button>
+        </div>
+      )}
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Oportunidades disponibles" value={openOpportunities.length} icon={HeartHandshake} accent="text-accent-400" delay={0} />
@@ -416,7 +531,12 @@ function SectionCard({
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
       <p className="text-sm font-medium text-white">{title}</p>
       <div className="mt-2">
-        {loading && <p className="py-4 text-sm text-slate-500">Cargando...</p>}
+        {loading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-accent-400" />
+            <span className="ml-3 text-sm text-slate-400">Cargando...</span>
+          </div>
+        )}
         {!loading && isEmpty && (
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <ShieldCheck size={20} className="text-slate-500" />

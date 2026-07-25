@@ -52,6 +52,7 @@ export default function BankAccountsSection() {
   }
 
   const handleRemove = async (id: string) => {
+    if (!window.confirm('¿Estás seguro de eliminar esta cuenta bancaria?')) return
     setError(null)
     try {
       await removeBankAccount(id)

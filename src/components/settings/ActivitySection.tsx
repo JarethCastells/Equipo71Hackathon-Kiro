@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  AlertCircle,
   Briefcase,
   KeyRound,
   Landmark,
@@ -45,11 +46,21 @@ function timeAgo(iso: string): string {
 export default function ActivitySection() {
   const [entries, setEntries] = useState<ActivityEntry[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     listActivity()
-      .then((res) => setEntries(res.entries))
-      .finally(() => setLoading(false))
+      .then((res) => {
+        if (!cancelled) setEntries(res.entries)
+      })
+      .catch(() => {
+        if (!cancelled) setError('No se pudo cargar la actividad reciente.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
   }, [])
 
   return (
@@ -60,7 +71,18 @@ export default function ActivitySection() {
       </p>
 
       <div className="mt-5 space-y-1">
-        {loading && <p className="text-sm text-slate-500">Cargando actividad...</p>}
+        {error && (
+          <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+            <AlertCircle size={16} className="shrink-0" />
+            {error}
+          </div>
+        )}
+        {loading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-accent-400" />
+            <span className="ml-3 text-sm text-slate-400">Cargando actividad...</span>
+          </div>
+        )}
 
         {!loading && entries.length === 0 && (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-white/10 py-10 text-center">

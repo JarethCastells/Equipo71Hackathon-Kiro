@@ -12,7 +12,7 @@ const LINKS = [
 ]
 
 export default function Navbar() {
-  const { user } = useAuth()
+  const { user, isLoading } = useAuth()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -49,7 +49,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          {user ? (
+          {isLoading ? (
+            <div className="h-5 w-20 rounded-full bg-white/5" />
+          ) : user ? (
             <Link
               to="/dashboard"
               className="flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-ink-950 transition-transform hover:scale-105"
@@ -104,7 +106,7 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
-            {user ? (
+            {isLoading ? null : user ? (
               <Link
                 to="/dashboard"
                 onClick={() => setOpen(false)}

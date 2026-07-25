@@ -10,6 +10,7 @@ import {
   MapPin,
   Pencil,
   Plus,
+  RefreshCw,
   Search,
   Sparkles,
   Trash2,
@@ -171,7 +172,9 @@ function CreatePostingForm({ onCreated }: { onCreated: () => void }) {
       )}
 
       <div className="mt-4 space-y-3">
+        <label htmlFor="create-title" className="sr-only">Título de la oferta</label>
         <input
+          id="create-title"
           type="text"
           required
           value={title}
@@ -179,7 +182,9 @@ function CreatePostingForm({ onCreated }: { onCreated: () => void }) {
           placeholder="Título de la oferta"
           className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
         />
+        <label htmlFor="create-description" className="sr-only">Descripción del proyecto</label>
         <textarea
+          id="create-description"
           required
           rows={3}
           value={description}
@@ -189,28 +194,38 @@ function CreatePostingForm({ onCreated }: { onCreated: () => void }) {
         />
 
         <div className="grid grid-cols-2 gap-3">
-          <select
-            value={roleTarget}
-            onChange={(e) => setRoleTarget(e.target.value as AccountRole)}
-            className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none focus:border-accent-500/60"
-          >
-            <option value="freelancer" className="bg-ink-900">Busco freelancer</option>
-            <option value="voluntario" className="bg-ink-900">Busco voluntario/a</option>
-          </select>
+          <div>
+            <label htmlFor="create-role-target" className="sr-only">Rol buscado</label>
+            <select
+              id="create-role-target"
+              value={roleTarget}
+              onChange={(e) => setRoleTarget(e.target.value as AccountRole)}
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none focus:border-accent-500/60"
+            >
+              <option value="freelancer" className="bg-ink-900">Busco freelancer</option>
+              <option value="voluntario" className="bg-ink-900">Busco voluntario/a</option>
+            </select>
+          </div>
           {roleTarget !== 'voluntario' && (
-            <input
-              type="text"
-              maxLength={4}
-              value={budgetPerHour}
-              onChange={(e) => setBudgetPerHour(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
-              placeholder="Presupuesto $/hora (máx 4 dígitos)"
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
-            />
+            <div>
+              <label htmlFor="create-budget" className="sr-only">Presupuesto por hora</label>
+              <input
+                id="create-budget"
+                type="text"
+                maxLength={4}
+                value={budgetPerHour}
+                onChange={(e) => setBudgetPerHour(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+                placeholder="Presupuesto $/hora (máx 4 dígitos)"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+              />
+            </div>
           )}
 
         </div>
 
+        <label htmlFor="create-skills" className="sr-only">Habilidades relevantes</label>
         <input
+          id="create-skills"
           type="text"
           value={skills}
           onChange={(e) => setSkills(e.target.value)}
@@ -220,11 +235,12 @@ function CreatePostingForm({ onCreated }: { onCreated: () => void }) {
 
         {roleTarget === 'voluntario' && (
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-300">
+            <label htmlFor="create-perks" className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-300">
               <Gift size={13} />
               Incentivos (para hacer atractiva la vacante)
             </label>
             <input
+              id="create-perks"
               type="text"
               value={perks}
               onChange={(e) => setPerks(e.target.value)}
@@ -852,11 +868,13 @@ export default function JobBoardPage() {
   const [allPostings, setAllPostings] = useState<JobPosting[]>([])
   const [myApplications, setMyApplications] = useState<JobApplicationWithPosting[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [viewingApplicantsFor, setViewingApplicantsFor] = useState<JobPosting | null>(null)
   const [editingPosting, setEditingPosting] = useState<JobPosting | null>(null)
   const [deletingPosting, setDeletingPosting] = useState<JobPosting | null>(null)
   const [applyMessage, setApplyMessage] = useState<Record<string, string>>({})
   const [feedback, setFeedback] = useState<string | null>(null)
+  const [submittingIds, setSubmittingIds] = useState<Set<string>>(new Set())
 
   const [searchQuery, setSearchQuery] = useState('')
   const [filterCategory, setFilterCategory] = useState<'all' | 'position' | 'company' | 'person' | 'services'>('all')
@@ -865,24 +883,39 @@ export default function JobBoardPage() {
 
   const isRecruiter = user?.role === 'reclutador'
 
-  const load = async () => {
+  const load = async (cancelledRef?: { cancelled: boolean }) => {
     setLoading(true)
+    setLoadError(null)
     try {
       const [postingsRes, applicationsRes] = await Promise.all([
         listJobPostings(),
         isRecruiter ? Promise.resolve({ applications: [] }) : listMyApplications(),
       ])
+      if (cancelledRef?.cancelled) return
       setAllPostings(postingsRes.postings)
       setMyApplications(applicationsRes.applications)
+    } catch (err) {
+      if (cancelledRef?.cancelled) return
+      setLoadError(err instanceof ApiError ? err.message : 'No se pudieron cargar las ofertas.')
     } finally {
-      setLoading(false)
+      if (!cancelledRef?.cancelled) setLoading(false)
     }
   }
 
   useEffect(() => {
-    load()
+    const cancelledRef = { cancelled: false }
+    load(cancelledRef)
+    return () => { cancelledRef.cancelled = true }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Re-run load when user role changes
+  useEffect(() => {
+    const cancelledRef = { cancelled: false }
+    load(cancelledRef)
+    return () => { cancelledRef.cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRecruiter])
 
   const postings = useMemo(() => {
     let list = isRecruiter ? allPostings.filter((p) => p.createdBy === user?.id) : allPostings
@@ -903,13 +936,21 @@ export default function JobBoardPage() {
   const appliedPostingIds = useMemo(() => new Set(myApplications.map((a) => a.postingId)), [myApplications])
 
   const handleApply = async (posting: JobPosting) => {
+    if (submittingIds.has(posting.id)) return
     setFeedback(null)
+    setSubmittingIds((prev) => new Set(prev).add(posting.id))
     try {
       await applyToJobPosting(posting.id, applyMessage[posting.id]?.trim() || undefined)
       setFeedback(`Te postulaste a "${posting.title}".`)
       await load()
     } catch (err) {
       setFeedback(err instanceof ApiError ? err.message : 'No se pudo enviar tu postulación.')
+    } finally {
+      setSubmittingIds((prev) => {
+        const next = new Set(prev)
+        next.delete(posting.id)
+        return next
+      })
     }
   }
 
@@ -994,6 +1035,25 @@ export default function JobBoardPage() {
           </div>
         </div>
 
+        {loadError && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300"
+          >
+            <AlertCircle size={16} className="shrink-0" />
+            <span className="flex-1">{loadError}</span>
+            <button
+              type="button"
+              onClick={() => load()}
+              className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+            >
+              <RefreshCw size={12} />
+              Reintentar
+            </button>
+          </motion.div>
+        )}
+
         {feedback && (
           <motion.div
             initial={{ opacity: 0, y: -6 }}
@@ -1035,7 +1095,12 @@ export default function JobBoardPage() {
             />
           )}
 
-          {loading && <p className="text-sm text-slate-500">Cargando ofertas...</p>}
+          {loading && (
+            <div className="flex items-center justify-center py-8">
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-accent-400" />
+              <span className="ml-3 text-sm text-slate-400">Cargando ofertas...</span>
+            </div>
+          )}
 
           <AnimatePresence>
             {postings.map((posting) => {
@@ -1124,7 +1189,9 @@ export default function JobBoardPage() {
                       </span>
                     ) : (
                       <>
+                        <label htmlFor={`apply-msg-${posting.id}`} className="sr-only">Mensaje para {posting.title}</label>
                         <input
+                          id={`apply-msg-${posting.id}`}
                           type="text"
                           value={applyMessage[posting.id] ?? ''}
                           onChange={(e) => setApplyMessage((prev) => ({ ...prev, [posting.id]: e.target.value }))}
@@ -1133,10 +1200,11 @@ export default function JobBoardPage() {
                         />
                         <button
                           type="button"
+                          disabled={submittingIds.has(posting.id)}
                           onClick={() => handleApply(posting)}
-                          className="shrink-0 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-5 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+                          className="shrink-0 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-5 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Postularme
+                          {submittingIds.has(posting.id) ? 'Postulando...' : 'Postularme'}
                         </button>
                       </>
                     )}
@@ -1146,10 +1214,14 @@ export default function JobBoardPage() {
             })}
           </AnimatePresence>
 
-          {!loading && postings.length === 0 && (
+          {!loading && !loadError && postings.length === 0 && (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 py-16 text-center">
               <MapPin size={22} className="text-slate-500" />
-              <p className="mt-2 text-slate-300">Todavía no hay ofertas publicadas.</p>
+              <p className="mt-2 text-slate-300">
+                {isRecruiter
+                  ? 'Todavía no hay ofertas publicadas.'
+                  : 'No hay ofertas que coincidan con tu perfil. Mientras tanto, completá tu perfil en Ajustes para recibir mejores matches.'}
+              </p>
             </div>
           )}
         </div>

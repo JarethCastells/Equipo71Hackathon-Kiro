@@ -70,9 +70,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshUser = useCallback(async () => {
     const currentToken = localStorage.getItem(TOKEN_KEY)
     if (!currentToken) return
-    const { user } = await api.fetchMe(currentToken)
-    setUser(user)
-  }, [])
+    try {
+      const { user } = await api.fetchMe(currentToken)
+      setUser(user)
+    } catch {
+      // Token inválido o expirado — limpiamos sesión
+      logout()
+    }
+  }, [logout])
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY)

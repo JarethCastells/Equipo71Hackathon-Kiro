@@ -39,6 +39,7 @@ export default function ResponsivaModal({
   const [submitting, setSubmitting] = useState(false)
   const [destination, setDestination] = useState<PayoutDestination | null>(null)
   const [loadingDest, setLoadingDest] = useState(true)
+  const [destError, setDestError] = useState<string | null>(null)
 
   // Estado para flujo de checkout
   const [activeAgreement, setActiveAgreement] = useState<HiringAgreement | null>(null)
@@ -51,8 +52,8 @@ export default function ResponsivaModal({
       .then((res) => {
         if (isMounted) setDestination(res.destination)
       })
-      .catch((err) => {
-        console.error('Error al obtener cuenta destino:', err)
+      .catch(() => {
+        setDestError('No se pudo cargar la cuenta destino del freelancer')
       })
       .finally(() => {
         if (isMounted) setLoadingDest(false)
@@ -184,18 +185,24 @@ export default function ResponsivaModal({
                 <Building2 size={15} />
                 <span>Cuenta bancaria de destino (Depósito directo)</span>
               </div>
+              {destError && (
+                <div className="mt-2 flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-amber-300">
+                  <AlertCircle size={13} className="shrink-0" />
+                  <span>{destError}</span>
+                </div>
+              )}
               {loadingDest ? (
                 <p className="mt-1 text-slate-400">Cargando cuenta bancaria registrada...</p>
-              ) : destination ? (
+              ) : !destError && destination ? (
                 <p className="mt-1 text-slate-200">
                   <span className="font-bold text-white">{destination.bankName}</span> — Titular:{' '}
                   {destination.holderName} (CLABE ****{destination.accountLast4})
                 </p>
-              ) : (
+              ) : !destError ? (
                 <p className="mt-1 text-amber-300">
                   El freelancer aún no ha vinculado una cuenta bancaria. Los fondos se mantendrán en custodia hasta que configure su cuenta en Ajustes.
                 </p>
-              )}
+              ) : null}
             </div>
 
             <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
