@@ -3,7 +3,6 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pool from './db.js';
-import { runSeed } from './seed.js';
 
 dotenv.config();
 
@@ -91,9 +90,6 @@ async function migrate(): Promise<void> {
   }
 
   console.log('[migrate] Migración completada con éxito.');
-
-  // Poblar la BD con usuarios de demostración
-  await runSeed();
 
   await pool.end();
 }

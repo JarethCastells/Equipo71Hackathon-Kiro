@@ -37,6 +37,13 @@ function encrypt(plainText: string): string {
 // ─── Seed ────────────────────────────────────────────────────────────────────
 
 export async function runSeed() {
+  // ⛔ BLOQUEO DE SEGURIDAD: este script hace TRUNCATE de TODAS las tablas
+  // y las reemplaza con datos de prueba. NUNCA debe ejecutarse en producción.
+  if (process.env.NODE_ENV === 'production') {
+    console.error('❌ runSeed está bloqueado en producción. Este script borra y reemplaza TODOS los datos reales con datos de prueba.')
+    console.error('   Si REALMENTE necesitás ejecutarlo, usá NODE_ENV=development.')
+    process.exit(1)
+  }
   console.log('🌱 TalentFlow AI — Seed completo v0.2')
   console.log(`📡 ${DB.host}:${DB.port}/${DB.database}`)
 
