@@ -106,6 +106,30 @@ const uploadLimiter = rateLimit({
   message: { error: 'Demasiadas subidas de imagen. Espera unos minutos.' },
 })
 
+// --- Rate limiting anti fuerza-bruta / anti-abuso ---
+// /password y /email/request-change validan bcrypt.compare contra la
+// contraseña actual: sin límite, cualquiera con un JWT robado (o incluso
+// sin JWT válido pero con reintentos) podría intentar adivinar la
+// contraseña sin fricción alguna.
+const credentialCheckLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos. Espera unos minutos e intenta de nuevo.' },
+})
+
+// El checkout de upgrade de plan hace cargos reales con Stripe. Sin límite,
+// es vulnerable a "card testing" (probar muchas tarjetas robadas en serie
+// para ver cuáles funcionan) usando la cuenta de un solo usuario autenticado.
+const checkoutLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hora
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos de pago. Espera unos minutos.' },
+})
+
 router.post(
   '/avatar',
   requireAuth,
@@ -154,7 +178,7 @@ router.patch('/profile', requireAuth, asyncRoute(async (req, res) => {
 }))
 
 // --- Cambio de contraseña ---
-router.post('/password', requireAuth, asyncRoute(async (req, res) => {
+router.post('/password', requireAuth, credentialCheckLimiter, asyncRoute(async (req, res) => {
   const { currentPassword, newPassword } = req.body ?? {}
 
   if (typeof currentPassword !== 'string' || typeof newPassword !== 'string') {
@@ -181,7 +205,7 @@ router.post('/password', requireAuth, asyncRoute(async (req, res) => {
 }))
 
 // --- Cambio de correo (requiere confirmación en la dirección nueva) ---
-router.post('/email/request-change', requireAuth, asyncRoute(async (req, res) => {
+router.post('/email/request-change', requireAuth, credentialCheckLimiter, asyncRoute(async (req, res) => {
   const { newEmail, currentPassword } = req.body ?? {}
 
   if (typeof newEmail !== 'string' || !isValidEmail(newEmail)) {
@@ -555,7 +579,7 @@ function isValidLuhn(cardNumber: string): boolean {
 /**
  * Procesa un cobro REAL de $10.00 MXN con Stripe a la tarjeta ingresada y actualiza el plan.
  */
-router.post('/upgrade-plan-checkout', requireAuth, asyncRoute(async (req, res) => {
+router.post('/upgrade-plan-checkout', requireAuth, checkoutLimiter, asyncRoute(async (req, res) => {
   const { plan, cardNumber, expiry, cvv, holderName } = req.body ?? {}
 
   if (!['libre', 'plus', 'pro'].includes(plan)) {

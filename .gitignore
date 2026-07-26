@@ -26,3 +26,6 @@ test-results
 
 .gitignore
 .vercel
+
+# Reportes de revisión de código generados por herramientas de IA (artefactos de sesión, no código del proyecto)
+semantic-review/

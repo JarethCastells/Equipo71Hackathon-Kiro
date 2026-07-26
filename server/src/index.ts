@@ -29,6 +29,31 @@ const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
+/**
+ * "trust proxy" le dice a Express que confíe en el header X-Forwarded-For
+ * para calcular req.ip. Es necesario cuando el servidor corre detrás de un
+ * proxy/load balancer real (Railway, Render, Vercel, nginx, Cloudflare...),
+ * porque sin esto req.ip siempre sería la IP interna del proxy, NO la del
+ * visitante real. Eso rompe silenciosamente dos cosas que dependen de
+ * req.ip: el rate limiting por IP (express-rate-limit) y la IP registrada
+ * en hiring_agreements/activity_log para trazabilidad.
+ *
+ * OJO: activarlo a ciegas (`app.set('trust proxy', true)`) cuando NO hay un
+ * proxy real delante es igual de peligroso, porque X-Forwarded-For es un
+ * header que cualquier cliente puede falsificar directamente — un atacante
+ * podría poner un valor arbitrario y saltarse el rate limiting por IP.
+ *
+ * Por eso el número de "hops" de proxy confiables se configura de forma
+ * explícita vía TRUST_PROXY (ej. "1" para un solo proxy como Railway/Render,
+ * "2" si hay CDN + load balancer encadenados). Por defecto se asume que NO
+ * hay proxy (0 = no confiar en X-Forwarded-For), que es lo seguro para
+ * correr localmente o con acceso directo a internet.
+ */
+const TRUST_PROXY_HOPS = Number(process.env.TRUST_PROXY ?? 0);
+if (TRUST_PROXY_HOPS > 0) {
+  app.set('trust proxy', TRUST_PROXY_HOPS);
+}
+
 app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
