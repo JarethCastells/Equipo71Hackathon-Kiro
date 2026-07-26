@@ -36,7 +36,7 @@ export default function Navbar() {
           <span className="text-lg font-bold tracking-tight">TalentFlow AI</span>
         </a>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           {LINKS.map((link) => (
             <a
               key={link.href}
@@ -48,7 +48,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           {isLoading ? (
             <div className="h-5 w-20 rounded-full bg-white/5" />
           ) : user ? (
@@ -79,7 +79,7 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="text-white md:hidden"
+          className="text-white lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
           aria-expanded={open}
@@ -93,7 +93,7 @@ export default function Navbar() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="border-t border-white/5 bg-ink-950/95 px-4 pb-6 pt-2 md:hidden"
+          className="border-t border-white/5 bg-ink-950/95 px-4 pb-6 pt-2 lg:hidden"
         >
           <div className="flex flex-col gap-4">
             {LINKS.map((link) => (

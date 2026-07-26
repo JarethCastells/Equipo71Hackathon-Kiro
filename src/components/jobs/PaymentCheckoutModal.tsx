@@ -82,7 +82,7 @@ export default function PaymentCheckoutModal({
         aria-label="Checkout de Pago Real"
       >
         <motion.div
-          className="relative w-full max-w-xl rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl sm:p-8"
+          className="candidate-scroll relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl sm:p-8"
           initial={{ opacity: 0, y: 24, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 15, scale: 0.97 }}
@@ -138,14 +138,14 @@ export default function PaymentCheckoutModal({
 
               {/* Tarjeta con resumen del depósito al freelancer */}
               <div className="mt-5 rounded-2xl border border-violet-500/30 bg-violet-950/30 p-4 backdrop-blur-sm">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-xs font-medium uppercase text-slate-400">Monto total a pagar</p>
                     <p className="text-2xl font-extrabold text-white">${agreedAmount.toFixed(2)} <span className="text-sm font-semibold text-violet-400">MXN</span></p>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-right">
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Beneficiario</p>
-                    <p className="text-sm font-bold text-white">{freelancerName}</p>
+                    <p className="text-sm font-bold text-white break-words">{freelancerName}</p>
                   </div>
                 </div>
 
@@ -172,7 +172,7 @@ export default function PaymentCheckoutModal({
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
                     Proveedor de Pago (Pasarela)
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                     {[
                       { id: 'stripe', name: 'Stripe', tag: 'Global' },
                       { id: 'mercadopago', name: 'MercadoPago', tag: 'LATAM' },
@@ -200,7 +200,7 @@ export default function PaymentCheckoutModal({
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
                     Método de Pago
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <button
                       type="button"
                       onClick={() => setPaymentMethod('card')}
@@ -278,7 +278,7 @@ export default function PaymentCheckoutModal({
                   </div>
                 )}
 
-                <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
                   <span className="flex items-center gap-1">
                     <Lock size={12} className="text-emerald-400" />
                     Cifrado SSL de 256 bits

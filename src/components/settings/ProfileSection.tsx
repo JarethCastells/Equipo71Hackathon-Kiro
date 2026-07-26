@@ -390,7 +390,7 @@ export default function ProfileSection() {
           <button
             type="submit"
             disabled={savingBasic}
-            className="rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-xs font-bold text-white shadow-lg disabled:opacity-60"
+            className="w-full rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-xs font-bold text-white shadow-lg disabled:opacity-60 sm:w-auto"
           >
             {savingBasic ? 'Guardando...' : 'Guardar cambios básicos'}
           </button>
@@ -414,11 +414,11 @@ export default function ProfileSection() {
           </div>
         )}
 
-        <form onSubmit={handleAddPlatform} className="mt-4 flex flex-col sm:flex-row items-center gap-2">
+        <form onSubmit={handleAddPlatform} className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <select
             value={newPlatformName}
             onChange={(e) => setNewPlatformName(e.target.value)}
-            className="rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white outline-none focus:border-violet-500"
+            className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white outline-none focus:border-violet-500 sm:w-auto"
           >
             <option value="LinkedIn">LinkedIn</option>
             <option value="GitHub">GitHub</option>
@@ -445,7 +445,7 @@ export default function ProfileSection() {
           <button
             type="submit"
             disabled={addingPlatform || !newPlatformUrl.trim()}
-            className="flex items-center gap-1.5 rounded-full bg-violet-600 px-4 py-2 text-xs font-bold text-white hover:bg-violet-500 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-1.5 rounded-full bg-violet-600 px-4 py-2 text-xs font-bold text-white hover:bg-violet-500 disabled:opacity-60 sm:w-auto"
           >
             <Plus size={14} />
             Agregar
@@ -496,7 +496,7 @@ export default function ProfileSection() {
           </div>
         )}
 
-        <div className="mt-4 flex flex-col sm:flex-row items-center gap-3">
+        <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <input
             type="text"
             value={photoCaption}
@@ -509,7 +509,7 @@ export default function ProfileSection() {
             type="button"
             onClick={() => photoInputRef.current?.click()}
             disabled={uploadingPhoto}
-            className="flex items-center gap-1.5 rounded-full bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-500 disabled:opacity-60 transition-all"
+            className="flex items-center justify-center gap-1.5 rounded-full bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-500 disabled:opacity-60 transition-all"
           >
             <Upload size={14} />
             {uploadingPhoto ? 'Subiendo...' : 'Subir Foto'}
@@ -586,7 +586,7 @@ export default function ProfileSection() {
             className="w-full resize-none rounded-xl border border-white/10 bg-slate-950/60 px-4 py-2 text-xs text-white placeholder:text-slate-500 outline-none focus:border-amber-500"
           />
 
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <input
               type="url"
               value={postImageUrl}
@@ -598,7 +598,7 @@ export default function ProfileSection() {
             <button
               type="submit"
               disabled={publishingPost || !postTitle.trim() || !postContent.trim()}
-              className="flex items-center gap-1.5 rounded-full bg-amber-500 px-5 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400 disabled:opacity-60 transition-all"
+              className="flex items-center justify-center gap-1.5 rounded-full bg-amber-500 px-5 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400 disabled:opacity-60 transition-all"
             >
               <Plus size={14} />
               {publishingPost ? 'Publicando...' : 'Publicar'}
@@ -616,9 +616,9 @@ export default function ProfileSection() {
 
           {posts.map((post) => (
             <div key={post.id} className="rounded-2xl border border-white/10 bg-slate-950/60 p-5 space-y-2">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h4 className="text-sm font-bold text-white">{post.title}</h4>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h4 className="text-sm font-bold text-white break-words">{post.title}</h4>
                   <span className="text-[10px] text-slate-500">
                     {new Date(post.createdAt).toLocaleDateString('es-MX', {
                       day: 'numeric',
@@ -669,11 +669,11 @@ export default function ProfileSection() {
           </div>
         )}
 
-        <div className="mt-4 flex flex-col sm:flex-row items-center gap-4">
+        <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
           {user?.cvUrl ? (
-            <div className="flex items-center gap-3 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-3 text-xs text-cyan-200">
-              <FileText size={18} />
-              <div>
+            <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-3 text-xs text-cyan-200">
+              <FileText size={18} className="shrink-0" />
+              <div className="min-w-0">
                 <p className="font-bold">CV Subido</p>
                 <a
                   href={`${API_URL}${user.cvUrl}`}
@@ -693,7 +693,7 @@ export default function ProfileSection() {
             type="button"
             onClick={() => cvInputRef.current?.click()}
             disabled={uploadingCv}
-            className="rounded-full border border-cyan-500/40 bg-cyan-500/10 px-5 py-2.5 text-xs font-bold text-cyan-300 hover:bg-cyan-500/20 disabled:opacity-60 transition-all"
+            className="w-full rounded-full border border-cyan-500/40 bg-cyan-500/10 px-5 py-2.5 text-xs font-bold text-cyan-300 hover:bg-cyan-500/20 disabled:opacity-60 transition-all sm:w-auto"
           >
             {uploadingCv ? 'Subiendo...' : user?.cvUrl ? 'Reemplazar CV (PDF)' : 'Subir CV (PDF)'}
           </button>

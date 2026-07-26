@@ -12,12 +12,12 @@ export default function BudgetSlider({ value, onChange, min = 0, max = 50 }: Bud
 
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <label htmlFor="budget-range" className="flex items-center gap-2 text-sm font-medium text-slate-200">
-          <DollarSign size={16} className="text-accent-400" />
+          <DollarSign size={16} className="shrink-0 text-accent-400" />
           Presupuesto máximo por hora
         </label>
-        <span className="rounded-full bg-accent-500/10 px-3 py-1 text-sm font-semibold text-accent-400">
+        <span className="shrink-0 self-start rounded-full bg-accent-500/10 px-3 py-1 text-sm font-semibold text-accent-400 sm:self-auto">
           {value === 0 ? 'Solo voluntariado' : `$${value}/h`}
         </span>
       </div>

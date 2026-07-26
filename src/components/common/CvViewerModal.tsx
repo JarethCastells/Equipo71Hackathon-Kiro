@@ -146,8 +146,8 @@ export default function CvViewerModal({
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
       >
         {/* Top Control Bar (Sticky & Visible) */}
-        <div className="sticky top-0 z-30 flex items-center justify-between border-b border-white/10 bg-slate-950 px-6 py-4 shrink-0">
-          <div className="flex items-center gap-2">
+        <div className="sticky top-0 z-30 flex flex-col gap-3 border-b border-white/10 bg-slate-950 px-4 py-4 shrink-0 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 text-[10px] font-bold text-emerald-400">
               <CheckCircle2 size={12} />
               ATS Filter Approved (98%)
@@ -155,7 +155,7 @@ export default function CvViewerModal({
             <span className="hidden text-xs text-slate-400 sm:inline">Vista Previa de Hoja de Vida</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={handleCopy}
@@ -197,16 +197,16 @@ export default function CvViewerModal({
           <div className="mx-auto max-w-2xl rounded-2xl bg-white p-8 text-slate-900 shadow-2xl sm:p-12 border border-slate-200">
             {/* Header del CV */}
             <div className="border-b-2 border-indigo-600 pb-6 mb-8">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 break-words">
                     {userProfile.name}
                   </h1>
                   <p className="mt-1 text-sm font-bold uppercase tracking-wider text-indigo-600">
                     {userProfile.profession || userProfile.role?.toUpperCase() || 'Profesional TalentFlow'}
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 font-bold border border-indigo-100">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 font-bold border border-indigo-100">
                   {userProfile.name.charAt(0).toUpperCase()}
                 </div>
               </div>

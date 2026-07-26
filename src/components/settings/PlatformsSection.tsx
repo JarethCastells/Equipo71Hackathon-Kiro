@@ -116,7 +116,7 @@ export default function PlatformsSection() {
         <button
           type="submit"
           disabled={saving}
-          className="shrink-0 rounded-xl bg-gradient-to-r from-accent-500 to-violet-500 px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full shrink-0 rounded-xl bg-gradient-to-r from-accent-500 to-violet-500 px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {saving ? 'Agregando...' : 'Conectar'}
         </button>
@@ -134,22 +134,22 @@ export default function PlatformsSection() {
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] p-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3"
               >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/5">
                     <Icon size={15} className="text-accent-400" />
                   </span>
-                  <div>
-                    <p className="text-sm font-medium text-white">{platform.platformName}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-white">{platform.platformName}</p>
                     <a
                       href={platform.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-1 text-xs text-slate-400 hover:text-accent-400"
+                      className="flex items-center gap-1 truncate text-xs text-slate-400 hover:text-accent-400"
                     >
-                      {platform.url.replace(/^https?:\/\//, '').slice(0, 40)}
-                      <ExternalLink size={10} />
+                      <span className="truncate">{platform.url.replace(/^https?:\/\//, '').slice(0, 40)}</span>
+                      <ExternalLink size={10} className="shrink-0" />
                     </a>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ export default function PlatformsSection() {
                   type="button"
                   onClick={() => handleRemove(platform.id)}
                   aria-label="Eliminar plataforma"
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-rose-500/10 hover:text-rose-400"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-rose-500/10 hover:text-rose-400"
                 >
                   <Trash2 size={14} />
                 </button>

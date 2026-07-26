@@ -153,7 +153,7 @@ export function PaymentResultModal({
   return (
     <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
       <motion.div
-        className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/20 bg-slate-900 p-6 text-center shadow-2xl sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-white/20 bg-slate-900 p-6 text-center shadow-2xl sm:p-8"
         initial={{ opacity: 0, scale: 0.85, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.85, y: 20 }}
@@ -347,7 +347,7 @@ export function PaymentCheckoutModal({
   return (
     <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
       <motion.div
-        className="relative w-full max-w-md rounded-3xl border border-white/20 bg-slate-900 p-6 shadow-2xl sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-white/20 bg-slate-900 p-6 shadow-2xl sm:p-8"
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -355,12 +355,12 @@ export function PaymentCheckoutModal({
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white"
+          className="absolute right-4 top-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white sm:right-5 sm:top-5"
         >
           <X size={18} />
         </button>
 
-        <div className="flex items-center gap-2 text-accent-400">
+        <div className="flex items-center gap-2 pr-10 text-accent-400">
           <CreditCard size={20} />
           <h3 className="text-lg font-bold text-white">Pago de Suscripción</h3>
         </div>
@@ -553,7 +553,7 @@ export default function PlanUpgradeModal({ isOpen, onClose }: PlanUpgradeModalPr
         aria-label="Planes y Paquetes Gemini AI"
       >
         <motion.div
-          className="relative w-full max-w-5xl rounded-3xl border border-white/15 bg-ink-900 p-6 shadow-2xl sm:p-8 my-8 candidate-scroll max-h-[90vh] overflow-y-auto"
+          className="relative w-full max-w-5xl rounded-3xl border border-white/15 bg-ink-900 p-5 shadow-2xl sm:p-8 my-8 candidate-scroll max-h-[90vh] overflow-y-auto"
           initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 15, scale: 0.97 }}
@@ -564,13 +564,13 @@ export default function PlanUpgradeModal({ isOpen, onClose }: PlanUpgradeModalPr
             type="button"
             onClick={onClose}
             aria-label="Cerrar modal"
-            className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white"
+            className="absolute right-4 top-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white sm:right-5 sm:top-5"
           >
             <X size={18} />
           </button>
 
           {/* Encabezado */}
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto pr-10 text-center sm:pr-0">
             <span className="inline-flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-4 py-1.5 text-xs font-semibold text-accent-400">
               <Sparkles size={14} />
               Paquetes & Licencias Gemini AI
@@ -623,7 +623,7 @@ export default function PlanUpgradeModal({ isOpen, onClose }: PlanUpgradeModalPr
               return (
                 <div
                   key={plan.id}
-                  className={`relative flex flex-col justify-between rounded-3xl border p-6 backdrop-blur-sm transition-all hover:border-white/20 ${plan.color}`}
+                  className={`relative flex flex-col justify-between rounded-3xl border p-5 backdrop-blur-sm transition-all hover:border-white/20 sm:p-6 ${plan.color}`}
                 >
                   {plan.badge && (
                     <div className="absolute -top-3.5 right-6 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md">

@@ -24,6 +24,7 @@ import { useUnreadMessages } from '../../hooks/useUnreadMessages';
 import type { GlobalSearchResult, NotificationEntry } from '../../lib/api';
 import { listNotifications, markAllNotificationsRead, markNotificationRead, searchGlobal } from '../../lib/api';
 import PlanUpgradeModal from './PlanUpgradeModal';
+import AIAssistantWidget from './AIAssistantWidget';
 import CvViewerModal from '../common/CvViewerModal';
 
 // Label de "Ofertas" varía según el rol: quien publica ofertas (reclutador)
@@ -150,7 +151,7 @@ function NotificationsBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.97 }}
             transition={{ duration: 0.15 }}
-            className='absolute right-0 top-11 z-50 w-80 rounded-2xl border border-white/10 bg-ink-900 shadow-2xl'>
+            className='fixed inset-x-3 top-[4.5rem] z-50 w-auto rounded-2xl border border-white/10 bg-ink-900 shadow-2xl sm:absolute sm:inset-x-auto sm:top-11 sm:right-0 sm:w-80'>
             <div className='flex items-center justify-between border-b border-white/5 px-4 py-3'>
               <p className='text-sm font-semibold text-white'>Notificaciones</p>
               {unreadCount > 0 && (
@@ -228,20 +229,20 @@ function GlobalHeaderSearch({ onSelectUserCv }: { onSelectUserCv: (user: any) =>
   }, [q]);
 
   return (
-    <div className="relative hidden md:block w-72 lg:w-96">
+    <div className="relative min-w-0 flex-1 max-w-[220px] sm:max-w-xs md:max-w-none md:w-72 lg:w-96">
       <div className="relative">
         <input
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="🔍 Buscar vacantes, servicios, personas o empresas..."
-          className="w-full rounded-full border border-white/15 bg-white/5 pl-9 pr-4 py-2 text-xs text-white placeholder:text-slate-500 outline-none focus:border-accent-500 focus:bg-slate-950 transition-all"
+          className="w-full rounded-full border border-white/15 bg-white/5 pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-500 outline-none focus:border-accent-500 focus:bg-slate-950 transition-all sm:pr-4"
         />
         <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
       </div>
 
       {isOpen && results && (
-        <div className="absolute left-0 top-full z-50 mt-2 w-full max-h-96 overflow-y-auto rounded-2xl border border-white/20 bg-slate-950 p-4 shadow-2xl space-y-4 backdrop-blur-2xl text-xs candidate-scroll">
+        <div className="fixed inset-x-3 top-[4.5rem] z-50 max-h-96 overflow-y-auto rounded-2xl border border-white/20 bg-slate-950 p-4 shadow-2xl space-y-4 backdrop-blur-2xl text-xs candidate-scroll sm:absolute sm:inset-x-auto sm:left-0 sm:top-full sm:mt-2 sm:w-full">
           {/* Vacantes y Servicios */}
           {results.jobs.length > 0 && (
             <div>
@@ -410,12 +411,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <div className='flex min-h-screen flex-1 flex-col'>
+      <div className='flex min-h-screen min-w-0 flex-1 flex-col'>
         {/* Topbar */}
-        <header className='flex items-center justify-between border-b border-white/5 bg-ink-950/80 px-4 py-4 backdrop-blur-md sm:px-6'>
+        <header className='flex items-center justify-between gap-2 border-b border-white/5 bg-ink-950/80 px-3 py-4 backdrop-blur-md sm:gap-4 sm:px-6'>
           <button
             type='button'
-            className='text-slate-300 lg:hidden'
+            className='shrink-0 text-slate-300 lg:hidden'
             onClick={() => setMobileOpen(true)}
             aria-label='Abrir menú'>
             <Menu size={22} />
@@ -423,7 +424,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           <GlobalHeaderSearch onSelectUserCv={(u) => setSelectedCvUser(u)} />
 
-          <div className='flex items-center gap-4'>
+          <div className='flex shrink-0 items-center gap-2 sm:gap-4'>
             <NotificationsBell />
 
             <div className='flex items-center gap-2.5'>
@@ -431,10 +432,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <img
                   src={avatarSrc}
                   alt='Foto de perfil'
-                  className='h-9 w-9 rounded-full border border-white/10 object-cover'
+                  className='h-9 w-9 shrink-0 rounded-full border border-white/10 object-cover'
                 />
               ) : (
-                <span className='flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-xs font-bold text-white'>
+                <span className='flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-xs font-bold text-white'>
                   {initials}
                 </span>
               )}
@@ -470,6 +471,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           />
         )}
       </div>
+
+      <AIAssistantWidget />
     </div>
   );
 }

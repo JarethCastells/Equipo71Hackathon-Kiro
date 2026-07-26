@@ -59,11 +59,11 @@ export default function Hero() {
               </a>
             </div>
 
-            <dl className="mt-14 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+            <dl className="mt-10 grid grid-cols-3 gap-3 border-t border-white/10 pt-6 sm:mt-14 sm:gap-6 sm:pt-8">
               {STATS.map((stat) => (
-                <div key={stat.label}>
-                  <dd className="text-2xl font-bold text-white sm:text-3xl">{stat.value}</dd>
-                  <dt className="mt-1 text-xs text-slate-400 sm:text-sm">{stat.label}</dt>
+                <div key={stat.label} className="min-w-0">
+                  <dd className="text-lg font-bold text-white sm:text-2xl lg:text-3xl">{stat.value}</dd>
+                  <dt className="mt-1 text-[11px] text-slate-400 sm:text-xs lg:text-sm">{stat.label}</dt>
                 </div>
               ))}
             </dl>

@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { initRealtime } from './realtime.js';
 import activityRoutes from './routes/activity.js';
+import assistantRoutes from './routes/assistant.js';
 import authRoutes from './routes/auth.js';
 import bankAccountRoutes from './routes/bankAccounts.js';
 import conversationRoutes from './routes/conversations.js';
@@ -72,6 +73,7 @@ app.use('/api/job-postings', jobPostingRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/conversations', conversationRoutes);
+app.use('/api/assistant', assistantRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });

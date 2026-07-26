@@ -62,7 +62,7 @@ export default function AuthLayout({ title, subtitle, children }: AuthLayoutProp
       </div>
 
       {/* Panel de formulario */}
-      <div className="flex w-full flex-1 items-center justify-center px-4 py-12 sm:px-8">
+      <div className="flex w-full flex-1 items-center justify-center px-4 py-8 sm:px-8 sm:py-12">
         <motion.div
           className="w-full max-w-md"
           initial={{ opacity: 0, y: 16 }}

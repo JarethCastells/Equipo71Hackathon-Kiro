@@ -884,3 +884,23 @@ export interface GlobalSearchResult {
 export function searchGlobal(q: string): Promise<{ results: GlobalSearchResult }> {
   return request(`/api/job-postings/global-search?q=${encodeURIComponent(q)}`);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Asistente IA (chat flotante con voz)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface AssistantChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+/** Envía un mensaje al asistente y devuelve su respuesta en texto. */
+export function sendAssistantMessage(input: {
+  message: string;
+  history: AssistantChatMessage[];
+}): Promise<{ reply: string }> {
+  return request('/api/assistant/message', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  });
+}

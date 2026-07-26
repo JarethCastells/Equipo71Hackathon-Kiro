@@ -36,7 +36,7 @@ export default function MessageBubble({
       transition={{ duration: 0.18 }}
       className={`flex w-full ${isOwn ? 'justify-end' : 'justify-start'}`}
     >
-      <div className={`max-w-[75%] flex flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
+      <div className={`max-w-[85%] sm:max-w-[75%] flex flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
         {/* Nombre del emisor (solo para mensajes ajenos) */}
         {!isOwn && senderName && (
           <span className="text-[11px] font-medium text-slate-400 px-1">{senderName}</span>

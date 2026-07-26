@@ -123,7 +123,7 @@ export default function ResponsivaModal({
         aria-label="Responsiva de pago"
       >
         <motion.div
-          className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-ink-900 p-6 shadow-2xl sm:p-8"
+          className="candidate-scroll relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-ink-900 p-6 shadow-2xl sm:p-8"
           initial={{ opacity: 0, y: 20, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 10, scale: 0.97 }}
@@ -194,7 +194,7 @@ export default function ResponsivaModal({
               {loadingDest ? (
                 <p className="mt-1 text-slate-400">Cargando cuenta bancaria registrada...</p>
               ) : !destError && destination ? (
-                <p className="mt-1 text-slate-200">
+                <p className="mt-1 break-words text-slate-200">
                   <span className="font-bold text-white">{destination.bankName}</span> — Titular:{' '}
                   {destination.holderName} (CLABE ****{destination.accountLast4})
                 </p>

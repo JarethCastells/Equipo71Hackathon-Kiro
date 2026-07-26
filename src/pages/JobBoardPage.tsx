@@ -193,7 +193,7 @@ function CreatePostingForm({ onCreated }: { onCreated: () => void }) {
           className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
             <label htmlFor="create-role-target" className="sr-only">Rol buscado</label>
             <select
@@ -420,18 +420,18 @@ function ApplicantsPanel({
                   <p className="text-sm font-medium text-slate-300">Candidatos ({ranking.applicants.length})</p>
                   {ranking.applicants.map((app) => (
                     <div key={app.id} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex min-w-0 items-start gap-3">
                           <ApplicantAvatar name={app.applicantName} avatarUrl={app.applicantAvatarUrl} />
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="text-sm font-medium text-white">{app.applicantName}</p>
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="text-sm font-medium text-white break-words">{app.applicantName}</p>
                               <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${getScoreColor(app.matchScore)}`}>
                                 <span className={`h-1.5 w-1.5 rounded-full ${getScoreDot(app.matchScore)}`} />
                                 {app.matchScore}%
                               </span>
                             </div>
-                            <p className="text-xs text-slate-400">
+                            <p className="text-xs text-slate-400 break-words">
                               {ROLE_LABEL[app.applicantRole]}
                               {app.message ? ` · "${app.message}"` : ''}
                             </p>
@@ -479,12 +479,12 @@ function ApplicantsPanel({
                         </div>
 
                         {app.status === 'pending' && (
-                          <div className="flex items-center gap-2">
+                          <div className="flex shrink-0 items-center gap-2 self-start sm:self-auto">
                             <button
                               type="button"
                               onClick={() => handleDecision(app.id, 'rejected')}
                               aria-label="Rechazar"
-                              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-slate-400 hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-400"
+                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 text-slate-400 hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-400"
                             >
                               <UserX size={14} />
                             </button>
@@ -494,7 +494,7 @@ function ApplicantsPanel({
                                 app.applicantRole === 'freelancer' ? setHiringTarget(app) : handleDecision(app.id, 'accepted')
                               }
                               aria-label="Aceptar"
-                              className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-white hover:scale-110"
+                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-white hover:scale-110"
                             >
                               <UserCheck size={14} />
                             </button>
@@ -513,12 +513,12 @@ function ApplicantsPanel({
                     <span className="text-lg">🏆</span>
                     <p className="text-sm font-semibold text-white">Candidato recomendado por la IA</p>
                   </div>
-                  <div className="mt-2 flex items-center gap-3">
+                  <div className="mt-2 flex items-start gap-3">
                     <ApplicantAvatar name={recommendedApp.applicantName} avatarUrl={recommendedApp.applicantAvatarUrl} />
-                    <div>
-                      <p className="text-sm font-medium text-white">
-                        {recommendedApp.applicantName}
-                        <span className={`ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${getScoreColor(recommendedApp.matchScore)}`}>
+                    <div className="min-w-0">
+                      <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-white">
+                        <span className="break-words">{recommendedApp.applicantName}</span>
+                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${getScoreColor(recommendedApp.matchScore)}`}>
                           <span className={`h-1.5 w-1.5 rounded-full ${getScoreDot(recommendedApp.matchScore)}`} />
                           {recommendedApp.matchScore}% match
                         </span>
@@ -675,7 +675,7 @@ function EditPostingModal({
         onClick={onClose}
       >
         <motion.div
-          className="relative w-full max-w-lg rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl sm:p-8"
+          className="candidate-scroll relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl sm:p-8"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
@@ -718,7 +718,7 @@ function EditPostingModal({
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className="mb-1 block text-xs font-medium text-slate-300">Rol buscado</label>
                 <select
@@ -987,7 +987,7 @@ export default function JobBoardPage() {
             <Search size={15} className="absolute left-3.5 top-3 text-slate-400" />
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto text-xs">
+          <div className="flex flex-wrap items-center gap-1.5 text-xs">
             <button
               type="button"
               onClick={() => setFilterCategory('all')}
@@ -1114,28 +1114,28 @@ export default function JobBoardPage() {
                   exit={{ opacity: 0 }}
                   className="rounded-2xl border border-white/10 bg-white/[0.03] p-6"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
+                  <div className="flex flex-col items-start justify-between gap-4 sm:flex-row">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/5">
                           <Briefcase size={15} className="text-accent-400" />
                         </span>
-                        <div>
-                          <p className="text-sm font-semibold text-white">{posting.title}</p>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-white break-words">{posting.title}</p>
                           <p className="text-xs text-slate-400">
                             Busca {ROLE_LABEL[posting.roleTarget]}
                             {posting.budgetPerHour > 0 ? ` · $${posting.budgetPerHour.toFixed(2)}/hora` : ''}
                           </p>
                         </div>
                       </div>
-                      <p className="mt-3 text-sm text-slate-300">{posting.description}</p>
+                      <p className="mt-3 text-sm text-slate-300 break-words">{posting.description}</p>
                       {posting.skills && (
-                        <p className="mt-2 text-xs text-slate-500">Habilidades: {posting.skills}</p>
+                        <p className="mt-2 text-xs text-slate-500 break-words">Habilidades: {posting.skills}</p>
                       )}
                       {posting.perks && (
-                        <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-400">
-                          <Gift size={12} />
-                          {posting.perks}
+                        <p className="mt-2 flex items-start gap-1.5 text-xs font-medium text-emerald-400">
+                          <Gift size={12} className="mt-0.5 shrink-0" />
+                          <span className="break-words">{posting.perks}</span>
                         </p>
                       )}
                     </div>

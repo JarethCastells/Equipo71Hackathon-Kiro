@@ -129,9 +129,14 @@ export default function FreelancerDetailsSection() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Ciudad"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                className="w-full min-w-0 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:px-4"
               />
-              <CountrySelect id="country" value={country} onChange={setCountry} />
+              <CountrySelect
+                id="country"
+                value={country}
+                onChange={setCountry}
+                className="w-full min-w-0 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-accent-500/60 sm:px-4"
+              />
             </div>
           </div>
         </div>
@@ -152,11 +157,11 @@ export default function FreelancerDetailsSection() {
 
         <div className="mt-4">
           <label className="mb-1.5 block text-sm font-medium text-slate-300">Tu costo</label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <select
               value={rateType}
               onChange={(e) => setRateType(e.target.value as RateType)}
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-accent-500/60"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-accent-500/60 sm:w-auto"
             >
               <option value="hourly" className="bg-ink-900">Por hora</option>
               <option value="project" className="bg-ink-900">Por proyecto</option>
@@ -176,7 +181,7 @@ export default function FreelancerDetailsSection() {
         <button
           type="submit"
           disabled={saving}
-          className="mt-5 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-5 w-full rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {saving ? 'Guardando...' : 'Guardar cambios'}
         </button>
@@ -186,13 +191,13 @@ export default function FreelancerDetailsSection() {
         <h2 className="text-base font-semibold text-white">Currículum (CV)</h2>
         <p className="mt-1 text-sm text-slate-400">Sube tu CV en PDF o Word, máx. 5MB.</p>
 
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
           {user?.cvUrl && (
             <a
               href={`${API_URL}${user.cvUrl}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
+              className="flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
             >
               <FileText size={14} />
               Ver CV actual
@@ -202,7 +207,7 @@ export default function FreelancerDetailsSection() {
             type="button"
             onClick={() => cvInputRef.current?.click()}
             disabled={uploadingCv}
-            className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 disabled:opacity-60"
+            className="flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 disabled:opacity-60"
           >
             <Upload size={14} />
             {uploadingCv ? 'Subiendo...' : user?.cvUrl ? 'Reemplazar CV' : 'Subir CV'}
