@@ -25,6 +25,13 @@ vi.mock('../conversationStore.js', () => ({
   findOrCreateDirectConversation: vi.fn(),
   listConversationsForUser: vi.fn(),
   isMember: vi.fn(),
+  // buildDmKey es una función pura real (no necesita mock de comportamiento),
+  // pero routes/conversations.ts la importa y la invoca directamente, así
+  // que debe existir en el mock del módulo o la llamada lanza TypeError.
+  buildDmKey: (userA: string, userB: string) => {
+    const [min, max] = userA < userB ? [userA, userB] : [userB, userA];
+    return `${min}:${max}`;
+  },
 }));
 
 vi.mock('../messageStore.js', () => ({

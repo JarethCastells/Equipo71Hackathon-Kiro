@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { Router, type NextFunction, type Request, type Response } from 'express'
+import rateLimit from 'express-rate-limit'
 import { authenticator } from 'otplib'
 import QRCode from 'qrcode'
 import { requireAuth, type AuthedRequest } from '../auth.js'
@@ -9,6 +10,19 @@ import { findUserById, setTotpSecret } from '../userStore.js'
 
 const router = Router()
 const ISSUER = 'TalentFlow AI'
+
+// --- Rate limiting anti fuerza-bruta ---
+// Un código TOTP de 6 dígitos solo tiene 1,000,000 de combinaciones posibles;
+// sin límite de intentos, /enable es vulnerable a fuerza bruta en minutos.
+// /disable exige la contraseña actual, así que también debe limitarse igual
+// que cualquier otro endpoint que valide credenciales.
+const totpAttemptLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos. Espera unos minutos e intenta de nuevo.' },
+})
 
 // Permitir tolerancia de tiempo de +/- 60s (window = 2) para compensar desfasamientos
 // de reloj entre el servidor y la app authenticator del usuario.
@@ -67,7 +81,7 @@ router.post('/setup', requireAuth, asyncRoute(async (req, res) => {
 
 // Paso 2: el usuario ingresa el código de 6 dígitos generado por su app
 // para confirmar que configuró el secreto correctamente antes de activarlo.
-router.post('/enable', requireAuth, asyncRoute(async (req, res) => {
+router.post('/enable', requireAuth, totpAttemptLimiter, asyncRoute(async (req, res) => {
   const { code } = req.body ?? {}
   if (typeof code !== 'string') {
     return res.status(400).json({ error: 'Ingresa el código de tu app de autenticación.' })
@@ -92,7 +106,7 @@ router.post('/enable', requireAuth, asyncRoute(async (req, res) => {
 
 // Desactivar 2FA: exige la contraseña actual para evitar que alguien con
 // una sesión abierta (pero sin la contraseña) pueda apagar esta protección.
-router.post('/disable', requireAuth, asyncRoute(async (req, res) => {
+router.post('/disable', requireAuth, totpAttemptLimiter, asyncRoute(async (req, res) => {
   const { currentPassword } = req.body ?? {}
   if (typeof currentPassword !== 'string') {
     return res.status(400).json({ error: 'Confirma tu contraseña actual para desactivar 2FA.' })

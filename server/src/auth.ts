@@ -1,7 +1,48 @@
+import { randomBytes } from 'node:crypto';
+import dotenv from 'dotenv';
 import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-only-insecure-secret';
+// Se carga aquí (y no solo en index.ts) porque en ESM los módulos importados
+// se inicializan antes de que se ejecute el cuerpo de index.ts. realtime.ts
+// importa este módulo ANTES que db.ts (que es el único otro lugar que llama
+// dotenv.config()), así que sin esto JWT_SECRET se leería vacío incluso con
+// un .env válido: mismo problema documentado en db.ts, aplicado aquí también.
+dotenv.config();
+
+/**
+ * Resuelve el secreto usado para firmar/verificar JWT.
+ *
+ * - Si JWT_SECRET está definido en el entorno, se usa tal cual.
+ * - En producción, si falta, se lanza un error duro: firmar tokens de
+ *   sesión con un secreto público y hardcodeado (como antes) permite que
+ *   cualquiera que lea el código fuente forje tokens válidos para
+ *   cualquier usuario.
+ * - Fuera de producción (dev/test sin .env configurado), se genera un
+ *   secreto aleatorio único para esa ejecución del proceso: la app sigue
+ *   funcionando, pero las sesiones se invalidan al reiniciar el servidor
+ *   y el secreto nunca queda expuesto en el código.
+ */
+function resolveJwtSecret(): string {
+  const configured = process.env.JWT_SECRET;
+  if (configured && configured.trim().length > 0) {
+    return configured;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(
+      'Falta JWT_SECRET en el entorno. Es obligatorio en producción: sin él, cualquiera que lea el código fuente podría forjar tokens de sesión válidos para cualquier usuario.',
+    );
+  }
+
+  console.warn(
+    '[auth] JWT_SECRET no está configurado. Usando un secreto aleatorio válido solo para esta ejecución ' +
+      '(las sesiones existentes se invalidarán al reiniciar el servidor). Define JWT_SECRET en server/.env antes de producción.',
+  );
+  return randomBytes(32).toString('hex');
+}
+
+const JWT_SECRET = resolveJwtSecret();
 const TOKEN_TTL = '7d';
 const PENDING_2FA_TTL = '5m';
 

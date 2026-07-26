@@ -2,7 +2,7 @@
  * Pruebas para la plantilla de nuevo mensaje y el helper de envío.
  * Requisito 7.2
  */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { renderNewMessageEmail } from '../emailTemplates.js';
 
 // ─── renderNewMessageEmail ────────────────────────────────────────────────────
@@ -81,27 +81,38 @@ describe('renderNewMessageEmail', () => {
 
 // ─── sendNewMessageEmail usa dispatch (preview Ethereal) ─────────────────────
 
+// sendNewMessageEmail delega en dispatch → getTransporter → sendMail. Sin
+// SMTP configurado, getTransporter cae a Ethereal, que crea una cuenta de
+// prueba REAL por red (nodemailer.createTestAccount()). Depender de esa
+// llamada de red real hace el test lento y frágil (falla por timeout en
+// entornos con red restringida/sandbox), así que se mockea nodemailer
+// completo para probar solo la lógica propia de mailer.ts sin red real.
+vi.mock('nodemailer', () => {
+  const sendMail = vi.fn().mockResolvedValue({ messageId: 'test-message-id' });
+  return {
+    default: {
+      createTestAccount: vi.fn().mockResolvedValue({
+        user: 'test-user',
+        pass: 'test-pass',
+        smtp: { host: 'smtp.ethereal.email', port: 587, secure: false },
+      }),
+      createTransport: vi.fn().mockReturnValue({ sendMail }),
+      getTestMessageUrl: vi.fn().mockReturnValue('https://ethereal.email/message/preview-id'),
+    },
+  };
+});
+
 describe('sendNewMessageEmail', () => {
   it('llama a sendMail y devuelve un objeto con previewUrl en modo Ethereal', async () => {
-    // Importamos sendNewMessageEmail directamente (sin re-mock de módulo)
     const { sendNewMessageEmail } = await import('../mailer.js');
 
-    // sendNewMessageEmail delega en dispatch → getTransporter → sendMail.
-    // Verificamos que devuelve un objeto (shape correcto) sin hacer red real.
-    // En CI sin SMTP configurado cae a Ethereal; la llamada puede fallar de red,
-    // lo que comprobamos capturando el error de forma controlada.
-    const resultPromise = sendNewMessageEmail('recipient@example.com', {
+    const result = await sendNewMessageEmail('recipient@example.com', {
       recipientName: 'Ana García',
       senderName: 'Carlos López',
       preview: 'Hola, ¿puedes revisar el contrato?',
       conversationUrl: 'https://talentflow.ai/dashboard/mensajes/conv-123',
     });
 
-    // La función devuelve una Promise — eso ya prueba que está conectada a dispatch
-    expect(resultPromise).toBeInstanceOf(Promise);
-
-    // Esperamos el resultado o el error de red sin que falle el test
-    const result = await resultPromise.catch(() => ({ previewUrl: undefined }));
-    expect(result).toHaveProperty('previewUrl');
+    expect(result).toHaveProperty('previewUrl', 'https://ethereal.email/message/preview-id');
   });
 });
