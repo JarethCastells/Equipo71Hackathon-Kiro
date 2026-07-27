@@ -46,7 +46,7 @@ function PlanCard({
   return (
     <div className={`relative flex flex-col justify-between rounded-3xl border p-6 backdrop-blur-sm ${color}`}>
       {badge && (
-        <div className="absolute -top-3.5 right-6 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md">
+        <div className="absolute -top-3.5 right-4 max-w-[calc(100%-2rem)] truncate rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md">
           {badge}
         </div>
       )}
@@ -146,14 +146,14 @@ export default function PlansSection() {
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-bold text-white">Tu suscripción Gemini AI</h2>
             <p className="mt-1 text-xs text-slate-400">
               Usa los paquetes para activar la modificación automática de CV, agendamiento autónomo de juntas por correo SMTP y postulaciones en segundo plano.
             </p>
           </div>
-          <span className="rounded-full border border-accent-500/30 bg-accent-500/10 px-4 py-1.5 text-xs font-bold uppercase text-accent-400">
+          <span className="shrink-0 self-start rounded-full border border-accent-500/30 bg-accent-500/10 px-4 py-1.5 text-xs font-bold uppercase text-accent-400 sm:self-center">
             Plan Actual: {currentPlan}
           </span>
         </div>

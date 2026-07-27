@@ -154,7 +154,7 @@ export default function SignupPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ana Torres"
-            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition-colors focus:border-accent-500/60 focus:bg-white/[0.07]"
+            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none transition-colors focus:border-accent-500/60 focus:bg-white/[0.07] sm:text-sm"
           />
         </div>
 
@@ -170,7 +170,7 @@ export default function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@correo.com"
-            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition-colors focus:border-accent-500/60 focus:bg-white/[0.07]"
+            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none transition-colors focus:border-accent-500/60 focus:bg-white/[0.07] sm:text-sm"
           />
         </div>
 
@@ -188,7 +188,7 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Mínimo 8 caracteres"
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 pr-11 text-sm text-white placeholder:text-slate-500 outline-none transition-colors focus:border-accent-500/60 focus:bg-white/[0.07]"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 pr-11 text-base text-white placeholder:text-slate-500 outline-none transition-colors focus:border-accent-500/60 focus:bg-white/[0.07] sm:text-sm"
             />
             <button
               type="button"
@@ -209,7 +209,7 @@ export default function SignupPage() {
                 key={r.value}
                 type="button"
                 onClick={() => setRole(r.value)}
-                className={`rounded-xl border px-3 py-3 text-left transition-colors ${
+                className={`rounded-xl border px-2 py-3 text-left transition-colors sm:px-3 ${
                   role === r.value
                     ? 'border-accent-500/50 bg-accent-500/10'
                     : 'border-white/10 bg-white/[0.02] hover:bg-white/5'

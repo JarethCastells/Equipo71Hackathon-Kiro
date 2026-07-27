@@ -83,7 +83,7 @@ export default function OnboardingModal() {
           aria-label="Completa tu perfil"
         >
           <motion.div
-            className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-ink-900 p-6 shadow-2xl sm:p-8"
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-ink-900 p-6 shadow-2xl sm:p-8"
             initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.97 }}
@@ -131,7 +131,7 @@ export default function OnboardingModal() {
                   value={profession}
                   onChange={(e) => setProfession(e.target.value)}
                   placeholder={role === 'reclutador' ? 'Ej. Agencia de marketing digital' : 'Ej. Diseñador UX, Chef, Desarrollador...'}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:text-sm"
                 />
               </div>
 
@@ -140,14 +140,14 @@ export default function OnboardingModal() {
                   <MapPin size={13} />
                   ¿De dónde eres?
                 </label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <input
                     id="city"
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Ciudad"
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:text-sm"
                   />
                   <CountrySelect id="country" value={country} onChange={setCountry} />
                 </div>
@@ -164,7 +164,7 @@ export default function OnboardingModal() {
                   onChange={(e) => setInterests(e.target.value.slice(0, 300))}
                   rows={2}
                   placeholder="Cuéntanos un poco más..."
-                  className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                  className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:text-sm"
                 />
               </div>
 
@@ -178,7 +178,7 @@ export default function OnboardingModal() {
                     <select
                       value={rateType}
                       onChange={(e) => setRateType(e.target.value as RateType)}
-                      className="rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-accent-500/60"
+                      className="shrink-0 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-accent-500/60"
                     >
                       <option value="hourly" className="bg-ink-900">Por hora</option>
                       <option value="project" className="bg-ink-900">Por proyecto</option>
@@ -190,7 +190,7 @@ export default function OnboardingModal() {
                       value={rateAmount}
                       onChange={(e) => setRateAmount(e.target.value)}
                       placeholder="Monto en $"
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                      className="w-full min-w-0 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -207,7 +207,7 @@ export default function OnboardingModal() {
                     value={availability}
                     onChange={(e) => setAvailability(e.target.value)}
                     placeholder="Ej. 10 horas/semana, fines de semana..."
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:text-sm"
                   />
                 </div>
               )}

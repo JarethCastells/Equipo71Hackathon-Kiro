@@ -115,7 +115,7 @@ export default function VerifyPage() {
                   value={resendEmail}
                   onChange={(e) => setResendEmail(e.target.value)}
                   placeholder="tu@correo.com"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-base text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:text-sm"
                 />
                 <button
                   type="button"

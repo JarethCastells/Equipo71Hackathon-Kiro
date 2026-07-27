@@ -95,7 +95,7 @@ function PasswordSection() {
       <button
         type="submit"
         disabled={saving}
-        className="mt-5 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-5 w-full rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {saving ? 'Actualizando...' : 'Actualizar contraseña'}
       </button>
@@ -176,7 +176,7 @@ function EmailChangeSection() {
       <button
         type="submit"
         disabled={saving}
-        className="mt-5 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-5 flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         <Mail size={15} />
         {saving ? 'Enviando...' : 'Enviar enlace de confirmación'}
@@ -256,7 +256,7 @@ function TwoFactorSection() {
 
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-base font-semibold text-white">Verificación en dos pasos</h2>
           <p className="mt-1 text-sm text-slate-400">
@@ -264,7 +264,7 @@ function TwoFactorSection() {
           </p>
         </div>
         <span
-          className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+          className={`flex shrink-0 items-center gap-1.5 self-start rounded-full px-3 py-1 text-xs font-semibold sm:self-center ${
             user?.totpEnabled ? 'bg-emerald-500/15 text-emerald-400' : 'bg-white/10 text-slate-400'
           }`}
         >
@@ -280,7 +280,7 @@ function TwoFactorSection() {
           type="button"
           onClick={startSetup}
           disabled={busy}
-          className="mt-5 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:opacity-60"
+          className="mt-5 w-full rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:opacity-60 sm:w-auto"
         >
           {busy ? 'Generando...' : 'Activar verificación en dos pasos'}
         </button>
@@ -296,14 +296,14 @@ function TwoFactorSection() {
               2. Si no puedes escanearlo, ingresa la clave de configuración manualmente:
             </p>
             {secret && (
-              <div className="mt-1 flex items-center gap-2">
-                <code className="rounded-xl bg-black/50 border border-white/10 px-4 py-2 font-mono text-sm tracking-widest text-accent-300 font-bold">
+              <div className="mt-1 flex w-full flex-col items-center gap-2 sm:w-auto sm:flex-row">
+                <code className="w-full max-w-xs break-all rounded-xl bg-black/50 border border-white/10 px-4 py-2 font-mono text-sm tracking-widest text-accent-300 font-bold text-center sm:w-auto sm:text-left">
                   {secret}
                 </code>
                 <button
                   type="button"
                   onClick={handleCopySecret}
-                  className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-bold text-white hover:bg-white/20 transition-all active:scale-95"
+                  className="flex shrink-0 items-center gap-1.5 rounded-xl border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-bold text-white hover:bg-white/20 transition-all active:scale-95"
                 >
                   {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
                   {copied ? '¡Copiado!' : 'Copiar'}
@@ -365,7 +365,7 @@ function TwoFactorSection() {
           <button
             type="submit"
             disabled={busy}
-            className="rounded-full border border-rose-500/30 bg-rose-500/10 px-6 py-2.5 text-sm font-semibold text-rose-300 transition-colors hover:bg-rose-500/20 disabled:opacity-60"
+            className="w-full rounded-full border border-rose-500/30 bg-rose-500/10 px-6 py-2.5 text-sm font-semibold text-rose-300 transition-colors hover:bg-rose-500/20 disabled:opacity-60 sm:w-auto"
           >
             {busy ? 'Desactivando...' : 'Desactivar verificación en dos pasos'}
           </button>

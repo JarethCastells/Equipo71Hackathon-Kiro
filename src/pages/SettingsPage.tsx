@@ -42,13 +42,13 @@ export default function SettingsPage() {
           Administra tu perfil, paquete Gemini AI, seguridad, cuentas bancarias y notificaciones.
         </p>
 
-        <div className="mt-6 flex gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1">
+        <div className="candidate-scroll mt-6 flex gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1">
           {TABS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
               type="button"
               onClick={() => setTab(key)}
-              className={`flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-medium transition-colors sm:px-4 sm:text-sm ${
                 tab === key
                   ? 'bg-gradient-to-r from-accent-500 to-violet-500 text-white'
                   : 'text-slate-400 hover:text-white'

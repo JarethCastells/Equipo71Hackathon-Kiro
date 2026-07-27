@@ -98,9 +98,9 @@ export default function ActivitySection() {
               <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5">
                 <Icon size={14} className="text-accent-400" />
               </span>
-              <div className="flex-1">
-                <p className="text-sm text-slate-200">{entry.description}</p>
-                <p className="mt-0.5 text-xs text-slate-500">
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-slate-200 break-words">{entry.description}</p>
+                <p className="mt-0.5 text-xs text-slate-500 break-words">
                   {timeAgo(entry.createdAt)}
                   {entry.ipAddress ? ` · IP ${entry.ipAddress}` : ''}
                 </p>

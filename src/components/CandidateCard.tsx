@@ -30,21 +30,25 @@ const CandidateCard = forwardRef<HTMLElement, CandidateCardProps>(function Candi
       className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-accent-500/40 hover:bg-white/[0.05]"
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div
             className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${candidate.color} text-sm font-bold text-white`}
             aria-hidden
           >
             {candidate.initials}
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <h3 className="font-semibold text-white">{candidate.name}</h3>
+              <h3 className="truncate font-semibold text-white">{candidate.name}</h3>
               {candidate.verified && (
-                <BadgeCheck size={15} className="text-accent-400" aria-label="Perfil verificado" />
+                <BadgeCheck
+                  size={15}
+                  className="shrink-0 text-accent-400"
+                  aria-label="Perfil verificado"
+                />
               )}
             </div>
-            <p className="text-sm text-slate-400">{candidate.role}</p>
+            <p className="truncate text-sm text-slate-400">{candidate.role}</p>
           </div>
         </div>
 

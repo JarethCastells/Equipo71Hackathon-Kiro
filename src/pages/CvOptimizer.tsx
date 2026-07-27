@@ -220,8 +220,8 @@ export default function CvOptimizer() {
         <div className="relative overflow-hidden rounded-3xl border border-accent-500/30 bg-gradient-to-r from-accent-950/60 via-slate-900 to-violet-950/60 p-6 backdrop-blur-xl sm:p-8">
           <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full bg-accent-500/10 blur-3xl" />
           <div className="relative z-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-            <div>
-              <div className="mb-2 flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span className="flex h-7 items-center gap-1.5 rounded-full border border-accent-500/30 bg-accent-500/20 px-3 text-[11px] font-bold uppercase tracking-wider text-accent-300">
                   <Sparkles size={13} className="text-accent-400" />
                   Gemini IA Engine
@@ -238,8 +238,8 @@ export default function CvOptimizer() {
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-center backdrop-blur-md">
+            <div className="flex items-center gap-3 self-stretch sm:self-auto">
+              <div className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-center backdrop-blur-md sm:w-auto">
                 <span className="block text-[10px] font-semibold uppercase text-slate-400">Plan Actual</span>
                 <span className="text-sm font-bold capitalize text-accent-300">{user?.plan ?? 'libre'}</span>
               </div>
@@ -278,11 +278,11 @@ export default function CvOptimizer() {
                       onClick={() => setIsJobDropdownOpen(!isJobDropdownOpen)}
                       className="flex w-full items-center justify-between gap-2 rounded-xl border border-white/15 bg-slate-950 px-3.5 py-3 text-left text-xs text-white transition-all hover:border-accent-500/60 focus:border-accent-500"
                     >
-                      <div className="flex items-center gap-2 overflow-hidden truncate">
+                      <div className="flex min-w-0 items-center gap-2">
                         {selectedJobObject ? (
                           <>
-                            <span className="font-bold text-accent-300 truncate">📌 {selectedJobObject.title}</span>
-                            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                            <span className="min-w-0 truncate font-bold text-accent-300">📌 {selectedJobObject.title}</span>
+                            <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-bold ${
                               selectedJobObject.roleTarget === 'voluntario'
                                 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                                 : 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
@@ -291,7 +291,7 @@ export default function CvOptimizer() {
                             </span>
                           </>
                         ) : (
-                          <span className="text-slate-400 font-medium">✏️ Ingresar puesto/descripción personalizada</span>
+                          <span className="truncate text-slate-400 font-medium">✏️ Ingresar puesto/descripción personalizada</span>
                         )}
                       </div>
                       <ChevronDown size={15} className={`shrink-0 text-slate-400 transition-transform ${isJobDropdownOpen ? 'rotate-180' : ''}`} />
@@ -355,8 +355,8 @@ export default function CvOptimizer() {
                                 }`}
                               >
                                 <div className="flex items-center justify-between gap-2">
-                                  <span className="font-bold text-white text-xs">📌 {job.title}</span>
-                                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold ${
+                                  <span className="min-w-0 truncate font-bold text-white text-xs">📌 {job.title}</span>
+                                  <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-extrabold ${
                                     job.roleTarget === 'voluntario'
                                       ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                                       : 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
@@ -503,8 +503,8 @@ export default function CvOptimizer() {
                 >
                   {/* Banner de Resultado & Score */}
                   <div className="relative overflow-hidden rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/60 to-slate-900 p-6 backdrop-blur-xl">
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                      <div>
+                    <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                      <div className="min-w-0">
                         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-bold text-emerald-300 border border-emerald-500/30">
                           <CheckCircle2 size={13} />
                           CV Reestructurado con Éxito
@@ -517,11 +517,11 @@ export default function CvOptimizer() {
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex w-full items-center gap-2 sm:w-auto">
                         <button
                           type="button"
                           onClick={handleCopyFormattedText}
-                          className="flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white transition-all hover:bg-white/20"
+                          className="flex w-full items-center justify-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white transition-all hover:bg-white/20 sm:w-auto"
                         >
                           {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
                           {copied ? 'Copiado' : 'Copiar Texto'}
@@ -539,12 +539,12 @@ export default function CvOptimizer() {
 
                   {/* Panel de Filtros & Verificación ATS */}
                   <div className="rounded-3xl border border-white/10 bg-slate-900/90 p-6 backdrop-blur-xl space-y-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-center gap-2 text-white">
-                        <ShieldCheck size={20} className="text-emerald-400" />
+                        <ShieldCheck size={20} className="shrink-0 text-emerald-400" />
                         <h4 className="font-bold text-sm">Filtros de Verificación ATS (Workday, Greenhouse, Lever, Taleo)</h4>
                       </div>
-                      <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-bold text-emerald-300 border border-emerald-500/30">
+                      <span className="shrink-0 self-start rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-bold text-emerald-300 border border-emerald-500/30 sm:self-center">
                         {optimizedResult.atsAnalysis?.score ?? 98}% ATS Approved
                       </span>
                     </div>
@@ -673,9 +673,9 @@ export default function CvOptimizer() {
 
                   {/* CV Formateado Completo & Editor Inline */}
                   <div className="rounded-3xl border border-white/10 bg-slate-950 p-6 backdrop-blur-xl space-y-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
                       <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                        <FileCheck2 size={16} className="text-accent-400" />
+                        <FileCheck2 size={16} className="shrink-0 text-accent-400" />
                         Editor & Vista Previa del CV Final:
                       </h4>
                       <span className="text-[10px] text-slate-500">Puedes editar cualquier texto directamente</span>

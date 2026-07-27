@@ -23,7 +23,7 @@ export default function ProfileModal({ candidate, onClose, onShortlist }: Profil
           aria-label={`Perfil de ${candidate.name}`}
         >
           <motion.div
-            className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-ink-900 p-6 shadow-2xl sm:p-8"
+            className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-ink-900 p-5 shadow-2xl sm:p-8"
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.97 }}
@@ -39,19 +39,21 @@ export default function ProfileModal({ candidate, onClose, onShortlist }: Profil
               <X size={18} />
             </button>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 pr-8">
               <div
-                className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${candidate.color} text-lg font-bold text-white`}
+                className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${candidate.color} text-lg font-bold text-white`}
                 aria-hidden
               >
                 {candidate.initials}
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-xl font-bold text-white">{candidate.name}</h2>
-                  {candidate.verified && <BadgeCheck size={16} className="text-accent-400" />}
+                  <h2 className="truncate text-xl font-bold text-white">{candidate.name}</h2>
+                  {candidate.verified && (
+                    <BadgeCheck size={16} className="shrink-0 text-accent-400" />
+                  )}
                 </div>
-                <p className="text-slate-400">{candidate.role}</p>
+                <p className="truncate text-slate-400">{candidate.role}</p>
               </div>
             </div>
 

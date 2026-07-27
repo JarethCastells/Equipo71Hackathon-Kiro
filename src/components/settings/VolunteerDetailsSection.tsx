@@ -106,9 +106,14 @@ export default function VolunteerDetailsSection() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Ciudad"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60"
+                className="w-full min-w-0 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-accent-500/60 sm:px-4"
               />
-              <CountrySelect id="country" value={country} onChange={setCountry} />
+              <CountrySelect
+                id="country"
+                value={country}
+                onChange={setCountry}
+                className="w-full min-w-0 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-accent-500/60 sm:px-4"
+              />
             </div>
           </div>
         </div>
@@ -144,7 +149,7 @@ export default function VolunteerDetailsSection() {
         <button
           type="submit"
           disabled={saving}
-          className="mt-5 rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-5 w-full rounded-full bg-gradient-to-r from-accent-500 to-violet-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {saving ? 'Guardando...' : 'Guardar cambios'}
         </button>

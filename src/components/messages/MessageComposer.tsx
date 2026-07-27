@@ -84,7 +84,7 @@ export default function MessageComposer({
         disabled={disabled}
         placeholder="Escribe un mensaje…"
         rows={1}
-        className={`flex-1 resize-none rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-0 ${
+        className={`min-w-0 flex-1 resize-none rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-accent-500/50 focus:ring-0 ${
           disabled ? 'cursor-not-allowed opacity-50' : ''
         }`}
         style={{ minHeight: '44px', maxHeight: '160px' }}

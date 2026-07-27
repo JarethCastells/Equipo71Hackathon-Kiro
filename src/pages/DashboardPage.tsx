@@ -112,9 +112,9 @@ function RecruiterDashboard() {
       />
 
       {error && (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+        <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
           <AlertCircle size={16} className="shrink-0" />
-          <span className="flex-1">{error}</span>
+          <span className="min-w-0 flex-1 break-words">{error}</span>
           <button
             type="button"
             onClick={() => {
@@ -129,7 +129,7 @@ function RecruiterDashboard() {
                 .catch(() => setError('No se pudieron cargar los datos del dashboard.'))
                 .finally(() => setLoading(false))
             }}
-            className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+            className="flex shrink-0 items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
           >
             <RefreshCw size={12} />
             Reintentar
@@ -148,9 +148,9 @@ function RecruiterDashboard() {
         <div className="lg:col-span-5">
           <SectionCard title="Tus ofertas publicadas" emptyText="Aún no has publicado ninguna oferta." loading={loading} isEmpty={postings.length === 0}>
             {postings.slice(0, 5).map((p) => (
-              <div key={p.id} className="flex items-center justify-between border-b border-white/5 py-3 last:border-0">
-                <div>
-                  <p className="text-sm font-medium text-white">{p.title}</p>
+              <div key={p.id} className="flex items-center justify-between gap-2 border-b border-white/5 py-3 last:border-0">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-white">{p.title}</p>
                   <p className="text-xs text-slate-400">
                     Busca {p.roleTarget === 'freelancer' ? 'freelancer' : 'voluntario/a'}
                     {p.budgetPerHour > 0 ? ` · $${p.budgetPerHour.toFixed(2)}/hora` : ''}
@@ -182,9 +182,9 @@ function RecruiterDashboard() {
                   <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5">
                     <FileSignature size={14} className="text-accent-400" />
                   </span>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-slate-200">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center justify-between gap-1.5">
+                      <p className="min-w-0 break-words text-sm text-slate-200">
                         Contrataste a <strong className="text-white">{a.freelancerName}</strong>
                         {a.postingTitle ? ` para "${a.postingTitle}"` : ''}
                       </p>
@@ -198,7 +198,7 @@ function RecruiterDashboard() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-0.5 text-xs text-slate-400">
+                    <p className="mt-0.5 break-words text-xs text-slate-400">
                       ${a.agreedAmount.toFixed(2)} MXN · {new Date(a.acceptedAt).toLocaleDateString('es-MX')}
                       {payment?.destinationBankName && (
                         <span className="ml-2 font-medium text-emerald-400">
@@ -261,9 +261,9 @@ function FreelancerDashboard() {
       />
 
       {error && (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+        <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
           <AlertCircle size={16} className="shrink-0" />
-          <span className="flex-1">{error}</span>
+          <span className="min-w-0 flex-1 break-words">{error}</span>
           <button
             type="button"
             onClick={() => {
@@ -279,7 +279,7 @@ function FreelancerDashboard() {
                 .catch(() => setError('No se pudieron cargar los datos del dashboard.'))
                 .finally(() => setLoading(false))
             }}
-            className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+            className="flex shrink-0 items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
           >
             <RefreshCw size={12} />
             Reintentar
@@ -314,8 +314,8 @@ function FreelancerDashboard() {
             {applications.slice(0, 6).map((a) => {
               const status = APP_STATUS_LABEL[a.status]
               return (
-                <div key={a.id} className="flex items-center justify-between border-b border-white/5 py-3 last:border-0">
-                  <p className="text-sm text-slate-200">{a.postingTitle}</p>
+                <div key={a.id} className="flex items-center justify-between gap-2 border-b border-white/5 py-3 last:border-0">
+                  <p className="min-w-0 truncate text-sm text-slate-200">{a.postingTitle}</p>
                   <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${status.className}`}>
                     {status.label}
                   </span>
@@ -414,9 +414,9 @@ function VolunteerDashboard() {
       />
 
       {error && (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+        <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
           <AlertCircle size={16} className="shrink-0" />
-          <span className="flex-1">{error}</span>
+          <span className="min-w-0 flex-1 break-words">{error}</span>
           <button
             type="button"
             onClick={() => {
@@ -430,7 +430,7 @@ function VolunteerDashboard() {
                 .catch(() => setError('No se pudieron cargar los datos del dashboard.'))
                 .finally(() => setLoading(false))
             }}
-            className="flex items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
+            className="flex shrink-0 items-center gap-1 rounded-full border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/10"
           >
             <RefreshCw size={12} />
             Reintentar
@@ -484,8 +484,8 @@ function VolunteerDashboard() {
             {applications.slice(0, 6).map((a) => {
               const status = APP_STATUS_LABEL[a.status]
               return (
-                <div key={a.id} className="flex items-center justify-between border-b border-white/5 py-3 last:border-0">
-                  <p className="text-sm text-slate-200">{a.postingTitle}</p>
+                <div key={a.id} className="flex items-center justify-between gap-2 border-b border-white/5 py-3 last:border-0">
+                  <p className="min-w-0 truncate text-sm text-slate-200">{a.postingTitle}</p>
                   <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${status.className}`}>
                     {status.label}
                   </span>

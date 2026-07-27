@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   AlertCircle,
+  ArrowLeft,
   Bell,
   Bot,
   Brain,
@@ -41,6 +42,8 @@ export default function MessagesPage() {
   const [conversations, setConversations] = useState<LegacyConversationSummary[]>([])
   const [activeTab, setActiveTab] = useState<'freelancers' | 'voluntarios' | 'todos'>('freelancers')
   const [selectedPartnerId, setSelectedPartnerId] = useState<string | null>(null)
+  // Controla, solo en móvil (<md), si se muestra el panel de chat en lugar de la bandeja.
+  const [mobileChatOpen, setMobileChatOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessageText, setNewMessageText] = useState('')
   const [loadingConv, setLoadingConv] = useState(true)
@@ -242,10 +245,15 @@ export default function MessagesPage() {
           </motion.div>
         )}
 
-        {/* Layout Grid de 3 columnas */}
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
-          {/* Columna Izquierda: Lista de Conversaciones (4 cols) */}
-          <div className="lg:col-span-4 rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm">
+        {/* Layout Grid de 3 columnas — bandeja/panel: en móvil se alterna, desde md ambos van lado a lado */}
+        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12 items-start">
+          {/* Columna Izquierda: Lista de Conversaciones (4 cols). En móvil se oculta cuando hay un chat abierto. */}
+          <div
+            className={`${
+              mobileChatOpen ? 'hidden' : 'flex'
+            } md:flex flex-col h-[calc(100vh-220px)] md:h-[650px] lg:col-span-4 rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm`}
+          >
+
             {/* Tabs para Reclutador */}
             {isRecruiter && (
               <div className="mb-4 grid grid-cols-2 gap-1 rounded-2xl border border-white/10 bg-ink-950/60 p-1">
@@ -276,7 +284,7 @@ export default function MessagesPage() {
               </div>
             )}
 
-            <div className="space-y-2 candidate-scroll max-h-[600px] overflow-y-auto pr-1">
+            <div className="space-y-2 candidate-scroll flex-1 min-h-0 overflow-y-auto pr-1">
               {loadingConv && (
                 <div className="flex items-center justify-center py-8">
                   <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-accent-400" />
@@ -305,7 +313,10 @@ export default function MessagesPage() {
                   <button
                     key={c.partnerId}
                     type="button"
-                    onClick={() => setSelectedPartnerId(c.partnerId)}
+                    onClick={() => {
+                      setSelectedPartnerId(c.partnerId)
+                      setMobileChatOpen(true)
+                    }}
                     className={`flex w-full items-start gap-3 rounded-2xl p-3.5 text-left transition-all ${
                       isSelected
                         ? 'border border-accent-500/40 bg-gradient-to-r from-accent-500/15 to-violet-500/15 text-white'
@@ -321,9 +332,9 @@ export default function MessagesPage() {
                     )}
 
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="truncate text-xs font-bold text-white">{c.partnerName}</p>
-                        <span className="text-[10px] text-slate-500">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="min-w-0 flex-1 truncate text-xs font-bold text-white">{c.partnerName}</p>
+                        <span className="shrink-0 text-[10px] text-slate-500">
                           {new Date(c.lastMessageAt).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
@@ -345,33 +356,47 @@ export default function MessagesPage() {
             </div>
           </div>
 
-          {/* Columna Centro: Ventana del Chat Activo (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col h-[650px] rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm">
+          {/* Columna Centro: Ventana del Chat Activo (5 cols). En móvil solo se muestra cuando hay chat abierto. */}
+          <div
+            className={`${
+              mobileChatOpen ? 'flex' : 'hidden'
+            } md:flex flex-col h-[calc(100vh-220px)] md:h-[650px] lg:col-span-5 rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm`}
+          >
             {selectedPartner ? (
               <>
                 {/* Cabecera del chat activo */}
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    {/* Botón volver a la bandeja: solo visible en móvil */}
+                    <button
+                      type="button"
+                      onClick={() => setMobileChatOpen(false)}
+                      aria-label="Volver a la bandeja de mensajes"
+                      className="md:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white transition-colors"
+                    >
+                      <ArrowLeft size={16} />
+                    </button>
+
                     {selectedPartner.partnerAvatarUrl ? (
                       <img
                         src={`${API_URL}${selectedPartner.partnerAvatarUrl}`}
                         alt={selectedPartner.partnerName}
-                        className="h-10 w-10 rounded-full object-cover"
+                        className="h-10 w-10 shrink-0 rounded-full object-cover"
                       />
                     ) : (
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-xs font-bold text-white">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-violet-500 text-xs font-bold text-white">
                         {(selectedPartner.partnerName || '??').slice(0, 2).toUpperCase()}
                       </span>
                     )}
-                    <div>
-                      <h3 className="text-sm font-bold text-white">{selectedPartner.partnerName}</h3>
-                      <p className="text-[11px] text-slate-400">
+                    <div className="min-w-0">
+                      <h3 className="truncate text-sm font-bold text-white">{selectedPartner.partnerName}</h3>
+                      <p className="truncate text-[11px] text-slate-400">
                         {selectedPartner.partnerProfession || selectedPartner.partnerRole}
                       </p>
                     </div>
                   </div>
 
-                  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-400">
+                  <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-400">
                     Activo
                   </span>
                 </div>
@@ -397,7 +422,7 @@ export default function MessagesPage() {
                     return (
                       <div key={m.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                         <div
-                          className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs shadow-md ${
+                          className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2.5 text-xs shadow-md ${
                             isMe
                               ? 'bg-gradient-to-r from-accent-500 to-violet-600 text-white rounded-br-none'
                               : 'bg-slate-800 border border-white/10 text-slate-200 rounded-bl-none'
@@ -429,7 +454,7 @@ export default function MessagesPage() {
                     value={newMessageText}
                     onChange={(e) => setNewMessageText(e.target.value)}
                     placeholder="Escribe tu mensaje..."
-                    className="flex-1 rounded-full border border-white/10 bg-slate-950/60 px-4 py-2.5 text-xs text-white placeholder:text-slate-500 outline-none focus:border-accent-500"
+                    className="min-w-0 flex-1 rounded-full border border-white/10 bg-slate-950/60 px-4 py-2.5 text-xs text-white placeholder:text-slate-500 outline-none focus:border-accent-500"
                   />
                   <button
                     type="submit"
@@ -458,8 +483,8 @@ export default function MessagesPage() {
             )}
           </div>
 
-          {/* Columna Derecha: Gemini AI Chat Copilot (3 cols) */}
-          <div className="lg:col-span-3 rounded-3xl border border-violet-500/30 bg-violet-950/20 p-4 backdrop-blur-sm space-y-4">
+          {/* Columna Derecha: Gemini AI Chat Copilot. Ancho completo en tablet, tercera columna solo en desktop (lg+) */}
+          <div className="md:col-span-2 lg:col-span-3 rounded-3xl border border-violet-500/30 bg-violet-950/20 p-4 backdrop-blur-sm space-y-4">
             <div className="flex items-center gap-2 text-violet-400">
               <Sparkles size={16} />
               <h3 className="text-xs font-bold uppercase tracking-wider">Gemini AI Copilot</h3>
