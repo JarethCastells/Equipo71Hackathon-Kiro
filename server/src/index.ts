@@ -57,6 +57,14 @@ if (TRUST_PROXY_HOPS > 0) {
 
 app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
+
+// SPA: cualquier ruta sin extensión que no sea /api/ sirve index.html
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) return next()
+  if (path.extname(req.path)) return next()
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
+})
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
@@ -109,14 +117,6 @@ app.use(
     });
   },
 );
-
-// SPA fallback: cualquier ruta que no sea /api/ ni archivo estático sirve index.html
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api/')) return next()
-  // Si ya es un archivo con extensión, dejar que express.static lo maneje
-  if (path.extname(req.path)) return next()
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
-})
 
 process.on('unhandledRejection', (reason) => {
   console.error('[server] unhandledRejection:', reason);
