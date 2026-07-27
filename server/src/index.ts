@@ -57,6 +57,7 @@ if (TRUST_PROXY_HOPS > 0) {
 app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
@@ -96,6 +97,12 @@ app.use(
     });
   },
 );
+
+// SPA fallback: cualquier ruta que no sea /api/ sirve index.html
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) return next()
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
+})
 
 process.on('unhandledRejection', (reason) => {
   console.error('[server] unhandledRejection:', reason);
