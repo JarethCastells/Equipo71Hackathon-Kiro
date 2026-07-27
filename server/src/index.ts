@@ -110,9 +110,11 @@ app.use(
   },
 );
 
-// SPA fallback: cualquier ruta que no sea /api/ sirve index.html
-app.get('*', (req, res, next) => {
+// SPA fallback: cualquier ruta que no sea /api/ ni archivo estático sirve index.html
+app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) return next()
+  // Si ya es un archivo con extensión, dejar que express.static lo maneje
+  if (path.extname(req.path)) return next()
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
