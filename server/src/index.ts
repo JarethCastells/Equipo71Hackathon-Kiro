@@ -63,6 +63,15 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.get('/api/ip', async (_req, res) => {
+  const ip = await new Promise<string>((resolve) => {
+    require('https').get('https://ifconfig.me/ip', (r: any) => {
+      let d = ''; r.on('data', (c: any) => d += c); r.on('end', () => resolve(d.trim()))
+    }).on('error', () => resolve('unknown'))
+  })
+  res.json({ ip })
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/2fa', twoFactorRoutes);
