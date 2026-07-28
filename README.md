@@ -119,12 +119,13 @@ npm run dev            # Inicia cliente Vite en http://localhost:5173
 
 Al correr `npm run migrate` se insertan automáticamente tres usuarios listos con contraseña `12345678`:
 
-| Nombre            | Email                        | Contraseña | Rol        |
-| ----------------- | ---------------------------- | ---------- | ---------- |
-| Ana Freelancer    | `ana.freelancer@demo.com`    | `12345678` | freelancer |
-| Carlos Voluntario | `carlos.voluntario@demo.com` | `12345678` | voluntario |
-| María Reclutadora | `maria.reclutadora@demo.com` | `12345678` | reclutador |
-
+| Email                            |   Contraseña   |
+| -------------------------------- | -------------- |
+| `  reclutador@empresa.com `      | `hackathon123` |
+| ` freelancer1@dev.com `          | `hackathon123` |
+| `   freelancer2@design.com  `    | `hackathon123` | 
+| `    voluntario1@ong.com  `      | `hackathon123` |
+| `  voluntario2@estudiante.com  ` | `hackathon123` | 
 ---
 
 ## 🔒 Notas de Seguridad
