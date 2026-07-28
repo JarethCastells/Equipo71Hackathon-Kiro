@@ -117,7 +117,7 @@ npm run dev            # Inicia cliente Vite en http://localhost:5173
 
 ## 🔑 Usuarios Demo
 
-Al correr `npm run migrate` se insertan automáticamente tres usuarios listos con contraseña `12345678`:
+Al correr `npm run migrate` se insertan cada usuario por sesión:
 
 | Email                            |   Contraseña   |
 | -------------------------------- | -------------- |
